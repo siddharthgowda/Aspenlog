@@ -1,2 +1,8 @@
 .env
 .idea/
+.DS_Store
+.secret
+.credentials
+.secrets/
+*.pem
+root/
