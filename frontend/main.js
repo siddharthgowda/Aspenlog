@@ -29,7 +29,7 @@ function createMainWindow() {
   mainWindow.loadFile(path.join(__dirname, "./renderer/login.html"));
 }
 
-// IPC Handlers (Unchanged)
+// IPC Handlers
 ipcMain.handle("store-token", async (event, token) => {
   await keytar.setPassword("ASPENLOG2020", "TokenAccount", token);
 });
@@ -48,4 +48,20 @@ ipcMain.handle("store-connection-address", async (event, connectionAddress) => {
 
 ipcMain.handle("get-connection-address", async () => {
   return await keytar.getPassword("ASPENLOG2020", "ConnectionAccount");
+});
+
+// Function to download files
+ipcMain.handle("download", (event, { data, filename }) => {
+  // Convert Uint8Array to Buffer
+  const buffer = Buffer.from(data);
+  // Get user's download directory
+  const downloadDir = path.join(os.homedir(), "Downloads");
+  // Write file to user's download directory
+  fs.writeFile(path.join(downloadDir, filename), buffer, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("File downloaded successfully");
+    }
+  });
 });
