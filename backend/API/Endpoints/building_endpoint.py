@@ -58,7 +58,7 @@ def building_endpoint(
         # Store the building object in the user's memory slot
         set_user_building(username=username, building=building)
         # Return the building object as a JSON string
-        return jsonpickle.encode(building)
+        return jsonpickle.encode(building, unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

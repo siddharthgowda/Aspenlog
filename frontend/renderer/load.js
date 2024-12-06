@@ -70,10 +70,10 @@ function getNumHeightZones() {
  */
 function getWindLoadInputs(zone_num) {
   let topographicFactor = document.getElementById(
-    `topographic-factor-hz-${zone_num}`,
+    `topographic-factor-hz-${zone_num}`
   ).value;
   let exposureFactor = document.querySelector(
-    `input[name="exposure-factor-selection-hz-${zone_num}"]:checked`,
+    `input[name="exposure-factor-selection-hz-${zone_num}"]:checked`
   ).id;
   let ceIntermediate;
 
@@ -90,12 +90,12 @@ function getWindLoadInputs(zone_num) {
   ) {
     exposureFactor = "intermediate";
     ceIntermediate = document.getElementById(
-      `ce-intermediate-hz-${zone_num}`,
+      `ce-intermediate-hz-${zone_num}`
     ).value;
   }
 
   let internalPressureCategory = document.querySelector(
-    `input[name="internal-pressure-category-selection-hz-${zone_num}"]:checked`,
+    `input[name="internal-pressure-category-selection-hz-${zone_num}"]:checked`
   ).id;
 
   // if enclosed
@@ -249,13 +249,13 @@ function doneLoadingWindLoads(zoneNum) {
     .getElementById(`topographic-factor-hz-${zoneNum}`)
     .classList.remove("skeleton-loader");
   document.getElementById(
-    `exposure-factor-open-option-hz-${zoneNum}`,
+    `exposure-factor-open-option-hz-${zoneNum}`
   ).disabled = false;
   document.getElementById(
-    `exposure-factor-rough-option-hz-${zoneNum}`,
+    `exposure-factor-rough-option-hz-${zoneNum}`
   ).disabled = false;
   document.getElementById(
-    `exposure-factor-intermediate-option-hz-${zoneNum}`,
+    `exposure-factor-intermediate-option-hz-${zoneNum}`
   ).disabled = false;
   document
     .getElementById(`exposure-factor-open-option-button-hz-${zoneNum}`)
@@ -267,27 +267,27 @@ function doneLoadingWindLoads(zoneNum) {
     .getElementById(`exposure-factor-intermediate-option-button-hz-${zoneNum}`)
     .classList.remove("skeleton-loader");
   document.getElementById(
-    `internal-pressure-category-enclosed-option-hz-${zoneNum}`,
+    `internal-pressure-category-enclosed-option-hz-${zoneNum}`
   ).disabled = false;
   document.getElementById(
-    `internal-pressure-category-partially-enclosed-option-hz-${zoneNum}`,
+    `internal-pressure-category-partially-enclosed-option-hz-${zoneNum}`
   ).disabled = false;
   document.getElementById(
-    `internal-pressure-category-large-openings-option-hz-${zoneNum}`,
+    `internal-pressure-category-large-openings-option-hz-${zoneNum}`
   ).disabled = false;
   document
     .getElementById(
-      `internal-pressure-category-enclosed-option-button-hz-${zoneNum}`,
+      `internal-pressure-category-enclosed-option-button-hz-${zoneNum}`
     )
     .classList.remove("skeleton-loader");
   document
     .getElementById(
-      `internal-pressure-category-partially-enclosed-option-button-hz-${zoneNum}`,
+      `internal-pressure-category-partially-enclosed-option-button-hz-${zoneNum}`
     )
     .classList.remove("skeleton-loader");
   document
     .getElementById(
-      `internal-pressure-category-large-openings-option-button-hz-${zoneNum}`,
+      `internal-pressure-category-large-openings-option-button-hz-${zoneNum}`
     )
     .classList.remove("skeleton-loader");
   document
@@ -313,12 +313,14 @@ function startLoadingWindLoads(i) {
     .classList.add("skeleton-loader");
 
   // disable associated radio buttons
-  document.getElementById(`exposure-factor-open-option-hz-${i}`).disabled =
-    true;
-  document.getElementById(`exposure-factor-rough-option-hz-${i}`).disabled =
-    true;
   document.getElementById(
-    `exposure-factor-intermediate-option-hz-${i}`,
+    `exposure-factor-open-option-hz-${i}`
+  ).disabled = true;
+  document.getElementById(
+    `exposure-factor-rough-option-hz-${i}`
+  ).disabled = true;
+  document.getElementById(
+    `exposure-factor-intermediate-option-hz-${i}`
   ).disabled = true;
 
   // add skeleton-loader to parent secondary button
@@ -334,13 +336,13 @@ function startLoadingWindLoads(i) {
 
   // disable radio buttons of internal pressure category
   document.getElementById(
-    `internal-pressure-category-enclosed-option-hz-${i}`,
+    `internal-pressure-category-enclosed-option-hz-${i}`
   ).disabled = true;
   document.getElementById(
-    `internal-pressure-category-partially-enclosed-option-hz-${i}`,
+    `internal-pressure-category-partially-enclosed-option-hz-${i}`
   ).disabled = true;
   document.getElementById(
-    `internal-pressure-category-large-openings-option-hz-${i}`,
+    `internal-pressure-category-large-openings-option-hz-${i}`
   ).disabled = true;
 
   // add skeleton loader to secondary buttons of internal pressure category
@@ -349,12 +351,12 @@ function startLoadingWindLoads(i) {
     .classList.add("skeleton-loader");
   document
     .getElementById(
-      `internal-pressure-category-partially-enclosed-option-button-hz-${i}`,
+      `internal-pressure-category-partially-enclosed-option-button-hz-${i}`
     )
     .classList.add("skeleton-loader");
   document
     .getElementById(
-      `internal-pressure-category-large-openings-option-button-hz-${i}`,
+      `internal-pressure-category-large-openings-option-button-hz-${i}`
     )
     .classList.add("skeleton-loader");
 
@@ -390,7 +392,7 @@ function getWindLoads() {
 
         // count the number of height zones by the number of height zones wind load headers
         const numHeightZones = document.querySelectorAll(
-          'h5[id^="wind-load-component-hz-"]',
+          'h5[id^="wind-load-component-hz-"]'
         ).length;
 
         let ctValues = [];
@@ -449,62 +451,62 @@ function getWindLoads() {
                     switch (innerZone["name"]) {
                       case "roof_interior":
                         document.getElementById(
-                          `pos-1-hz-${zoneNum}`,
+                          `pos-1-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["pos_uls"],
+                          innerZone["pressure"]["pos_uls"]
                         ).toFixed(4);
                         document.getElementById(
-                          `neg-1-hz-${zoneNum}`,
+                          `neg-1-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["neg_uls"],
+                          innerZone["pressure"]["neg_uls"]
                         ).toFixed(4);
                         break;
                       case "roof_edge":
                         document.getElementById(
-                          `pos-2-hz-${zoneNum}`,
+                          `pos-2-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["pos_uls"],
+                          innerZone["pressure"]["pos_uls"]
                         ).toFixed(4);
                         document.getElementById(
-                          `neg-2-hz-${zoneNum}`,
+                          `neg-2-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["neg_uls"],
+                          innerZone["pressure"]["neg_uls"]
                         ).toFixed(4);
                         break;
                       case "roof_corner":
                         document.getElementById(
-                          `pos-3-hz-${zoneNum}`,
+                          `pos-3-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["pos_uls"],
+                          innerZone["pressure"]["pos_uls"]
                         ).toFixed(4);
                         document.getElementById(
-                          `neg-3-hz-${zoneNum}`,
+                          `neg-3-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["neg_uls"],
+                          innerZone["pressure"]["neg_uls"]
                         ).toFixed(4);
                         break;
                       case "wall_centre":
                         document.getElementById(
-                          `pos-4-hz-${zoneNum}`,
+                          `pos-4-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["pos_uls"],
+                          innerZone["pressure"]["pos_uls"]
                         ).toFixed(4);
                         document.getElementById(
-                          `neg-4-hz-${zoneNum}`,
+                          `neg-4-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["neg_uls"],
+                          innerZone["pressure"]["neg_uls"]
                         ).toFixed(4);
                         break;
                       case "wall_corner":
                         document.getElementById(
-                          `pos-5-hz-${zoneNum}`,
+                          `pos-5-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["pos_uls"],
+                          innerZone["pressure"]["pos_uls"]
                         ).toFixed(4);
                         document.getElementById(
-                          `neg-5-hz-${zoneNum}`,
+                          `neg-5-hz-${zoneNum}`
                         ).innerHTML = parseFloat(
-                          innerZone["pressure"]["neg_uls"],
+                          innerZone["pressure"]["neg_uls"]
                         ).toFixed(4);
                         break;
                     }
@@ -515,7 +517,7 @@ function getWindLoads() {
               .catch((error) => {
                 console.error(error);
                 const numHeightZones = document.querySelectorAll(
-                  'h5[id^="wind-load-component-hz-"]',
+                  'h5[id^="wind-load-component-hz-"]'
                 ).length;
                 for (let i = 1; i <= numHeightZones; i++) {
                   doneLoadingWindLoads(i);
@@ -587,7 +589,7 @@ function getSeismicLoads() {
         const raw = JSON.stringify({
           ar: parseFloat(document.getElementById("amplification-factor").value),
           rp: parseFloat(
-            document.getElementById("response-modification-factor").value,
+            document.getElementById("response-modification-factor").value
           ),
           cp: parseFloat(document.getElementById("component-factor").value),
         });
@@ -686,7 +688,7 @@ function getSnowLoad() {
         myHeaders.append("Authorization", `Bearer ${token}`);
 
         const numHeightZones = document.querySelectorAll(
-          'h5[id^="wind-load-component-hz-"]',
+          'h5[id^="wind-load-component-hz-"]'
         ).length;
         let exposureFactorSelection = document
           .getElementById(`exposure-factor-selection-hz-${numHeightZones}`)
@@ -714,7 +716,7 @@ function getSnowLoad() {
         }
 
         let roofTypeSelectionElement = document.querySelector(
-          '#roof-type-selection input[type="radio"]:checked',
+          '#roof-type-selection input[type="radio"]:checked'
         );
         let roofTypeSelection = roofTypeSelectionElement
           ? roofTypeSelectionElement.id
@@ -813,12 +815,12 @@ document
   .getElementById("wind-calculate-button")
   .addEventListener("click", () => {
     let numHeightZones = document.querySelectorAll(
-      'h5[id^="wind-load-component-hz-"]',
+      'h5[id^="wind-load-component-hz-"]'
     ).length;
     for (let i = 1; i <= numHeightZones; i++) {
       // check that the exposure factor and internal pressure category are selected and topographic factor is not empty
       let exposureFactor = document.querySelector(
-        `input[name="exposure-factor-selection-hz-${i}"]:checked`,
+        `input[name="exposure-factor-selection-hz-${i}"]:checked`
       );
 
       // if intermediate exposure factor is selected, check that the ce intermediate is not empty
@@ -827,7 +829,7 @@ document
         exposureFactor.id === `exposure-factor-intermediate-option-hz-${i}`
       ) {
         let ceIntermediate = document.getElementById(
-          `ce-intermediate-hz-${i}`,
+          `ce-intermediate-hz-${i}`
         ).value;
         if (ceIntermediate === "") {
           document.getElementById("wind-calculate-warning").style.color = "red";
@@ -846,10 +848,10 @@ document
       }
 
       let internalPressureCategory = document.querySelector(
-        `input[name="internal-pressure-category-selection-hz-${i}"]:checked`,
+        `input[name="internal-pressure-category-selection-hz-${i}"]:checked`
       );
       let topographicFactor = document.getElementById(
-        `topographic-factor-hz-${i}`,
+        `topographic-factor-hz-${i}`
       ).value;
 
       if (
@@ -884,10 +886,10 @@ document
   .addEventListener("click", () => {
     // check that the amplification factor, response modification factor and component factor are not empty
     let amplificationFactor = document.getElementById(
-      "amplification-factor",
+      "amplification-factor"
     ).value;
     let responseModificationFactor = document.getElementById(
-      "response-modification-factor",
+      "response-modification-factor"
     ).value;
     let componentFactor = document.getElementById("component-factor").value;
 
@@ -926,10 +928,10 @@ document
   .addEventListener("click", () => {
     // check that roof type and exposure factor are selected
     let numHeightZones = document.querySelectorAll(
-      'h5[id^="wind-load-component-hz-"]',
+      'h5[id^="wind-load-component-hz-"]'
     ).length;
     let roofTypeSelection = document.querySelector(
-      '#roof-type-selection input[type="radio"]:checked',
+      '#roof-type-selection input[type="radio"]:checked'
     );
     let exposureFactorSelection = document
       .getElementById(`exposure-factor-selection-hz-${numHeightZones}`)
@@ -971,7 +973,7 @@ function save() {
 
           return fetch(
             `${connectionAddress}/get_user_current_save_file`,
-            requestOptions,
+            requestOptions
           )
             .then((response) => {
               if (response.status === 200) {
@@ -1001,7 +1003,7 @@ function save() {
 
               return fetch(
                 `${connectionAddress}/set_user_save_data`,
-                requestOptions,
+                requestOptions
               )
                 .then((response) => response.text())
                 .catch((error) => console.error(error));
@@ -1220,7 +1222,7 @@ function loadSaveFile() {
 
             fetch(
               `${connectionAddress}/get_user_save_file?id=${id}`,
-              requestOptions,
+              requestOptions
             )
               .then((response) => {
                 if (response.status === 200) {
@@ -1242,7 +1244,7 @@ function loadSaveFile() {
 
                 fetch(
                   `${connectionAddress}/get_user_save_file?id=${id}`,
-                  requestOptions,
+                  requestOptions
                 )
                   .then((response) => {
                     if (response.status === 200) {

@@ -86,6 +86,8 @@ def set_user_current_save_file(username: str, current_save_file: int) -> None:
     # Set the id of the current save file for the user
     ALL_USER_DATA[username].set_current_save_file(current_save_file)
 
+    print("SET USER CURRENT SAVE FILE", ALL_USER_DATA[username], sep="\n")
+
 
 def set_user_location(username: str, location: Location) -> None:
     """
@@ -232,7 +234,7 @@ def set_user_save_data(username: str, json_data: str, id: int = None) -> int:
         for key, value in jsonpickle.decode(json_data).items():
             prev_data[key] = value
 
-        existing_entry.JsonData = jsonpickle.encode(prev_data)
+        existing_entry.JsonData = jsonpickle.encode(prev_data, unpicklable=False)
         existing_entry.DateModified = datetime.now()
     # Create new entry with the current time
     else:
@@ -348,6 +350,7 @@ def get_user_building(username: str) -> Building:
     :param username: The username of the user
     :return: The building object
     """
+    print("GET USER BUILDING", ALL_USER_DATA.get(username).get_building(), sep="\n")
     return ALL_USER_DATA.get(username).get_building()
 
 
@@ -375,7 +378,7 @@ def get_user_data(username: str):
     :param username: The username of the user
     :return: A JSON representation of the user data
     """
-    return jsonpickle.encode(ALL_USER_DATA.get(username), indent=4)
+    return jsonpickle.encode(ALL_USER_DATA.get(username), indent=4, unpicklable=False)
 
 
 def get_all_user_save_data(username: str):

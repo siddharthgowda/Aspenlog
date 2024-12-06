@@ -125,7 +125,7 @@ def populate_canadian_postal_code_data_table():
 ########################################################################################################################
 
 # ONLY RUN IF DATABASE NEEDS TO BE REPOPULATED
-if __name__ == "__main__":
+def main():
     print(
         "WARNING: This script will repopulate the CanadianPostalCodeData table. If the database is already populated, this will delete existing data and repopulate the table, meaning any manual changes will be lost."
     )
@@ -137,3 +137,6 @@ if __name__ == "__main__":
         DATABASE.close()
     else:
         exit(0)
+        
+if __name__ == "__main__":
+    main()

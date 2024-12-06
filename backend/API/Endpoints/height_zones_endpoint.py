@@ -48,7 +48,8 @@ def get_height_zones_endpoint(username: str = Depends(decode_token)):
         for zone in building.height_zones:
             height_zones[zone.zone_num] = zone
         # Return the height zones as a JSON string
-        return jsonpickle.encode(height_zones)
+
+        return jsonpickle.encode(height_zones, unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
