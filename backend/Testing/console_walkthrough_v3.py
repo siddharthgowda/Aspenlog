@@ -198,7 +198,7 @@ def serialize(name: str, obj):
     # save obj to save.json under name using jsonpickle
     with open("save.json", "r") as f:
         data = json.load(f)
-        data[name] = jsonpickle.encode(obj)
+        data[name] = jsonpickle.encode(obj, unpicklable=False)
     with open("save.json", "w") as f:
         json.dump(data, f, indent=4)
 

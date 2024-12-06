@@ -95,7 +95,7 @@ def add_entry(authentication_data: AuthenticationData):
 ########################################################################################################################
 
 # ONLY RUN IF DATABASE NEEDS TO BE REPOPULATED
-if __name__ == "__main__":
+def main():
     print(
         "WARNING: This script will repopulate the AuthenticationData table. THIS WILL DELETE ALL USERS AND RENDER THEM UNRECOVERABLE."
     )
@@ -106,3 +106,7 @@ if __name__ == "__main__":
         DATABASE.close()
     else:
         exit(0)
+
+if __name__ == "__main__":
+    main()
+

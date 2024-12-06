@@ -148,4 +148,6 @@ if __name__ == "__main__":
     app.include_router(visualization_router)
     app.include_router(output_router)
 
+    print("\n\n server will start soon, please wait for a bit\n\n")
     uvicorn.run(app, host="0.0.0.0", port=42614)
+ 
