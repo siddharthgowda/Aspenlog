@@ -36,6 +36,8 @@ from backend.visualizations.load_combination_bar_chart import generate_bar_chart
 from blender.scripts.blender_object import WindZone, SeismicZone
 from blender.scripts.blender_request import run_blender_script
 from config import get_file_path
+from dotenv import load_dotenv
+import os
 
 ########################################################################################################################
 # ROUTER
@@ -56,6 +58,7 @@ def generate_bar_chart_endpoint(username: str = Depends(decode_token)):
     :param username: The username of the user
     :return: A JSON object containing the id of the bar chart and the number of bar charts generated
     """
+
     try:
         # If storage for the user does not exist in memory, create a slot for the user
         check_user_exists(username)
@@ -69,7 +72,7 @@ def generate_bar_chart_endpoint(username: str = Depends(decode_token)):
             id=id, building=building, snow_load=snow_load
         )
         # Return the id and the number of bar charts generated
-        return jsonpickle.encode({"id": id, "num_bar_charts": num_generated})
+        return jsonpickle.encode({"id": id, "num_bar_charts": num_generated}, unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -117,15 +120,15 @@ def generate_load_model_endpoint(username: str = Depends(decode_token)):
             prev_elevation = height_zone.elevation
 
         # Convert the wind and seismic cubes to JSON
-        json_wind = jsonpickle.encode(wind_cubes)
+        json_wind = jsonpickle.encode(wind_cubes, unpicklable=False)
         path_wind = get_file_path("blender/scripts/wind_cube.py")
         run_blender_script(script_path=path_wind, id=id, json_str=json_wind)
 
-        json_seismic = jsonpickle.encode(seismic_cubes)
+        json_seismic = jsonpickle.encode(seismic_cubes, unpicklable=False)
         path_seismic = get_file_path("blender/scripts/seismic_cube.py")
         run_blender_script(script_path=path_seismic, id=id, json_str=json_seismic)
         # Return the id of the load models
-        return jsonpickle.encode(id)
+        return jsonpickle.encode(id, unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -157,7 +160,7 @@ def generate_simple_model_endpoint(
         path_simple = get_file_path("blender/scripts/simple_cube.py")
         run_blender_script(script_path=path_simple, id=id, json_str=json_simple)
         # Return the id of the simple model
-        return jsonpickle.encode(id)
+        return jsonpickle.encode(id, unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

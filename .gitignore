@@ -6,3 +6,9 @@
 .secrets/
 *.pem
 root/
+*.key
+*.pub
+node_modules/
+notes/
+__pycache__/
+*.pyc

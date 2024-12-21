@@ -83,7 +83,7 @@ def get_user_profile_endpoint(username: str = Depends(decode_token)):
         # If storage for the user does not exist in memory, create a slot for the user
         check_user_exists(username)
         # A JSON representation of the user's profile data
-        return jsonpickle.encode(get_user_profile(username))
+        return jsonpickle.encode(get_user_profile(username), unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,40 +1,53 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// IMPORTS
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 const path = require("path");
-const { app, BrowserWindow } = require("electron");
-const { ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const keytar = require("keytar");
 const fs = require("fs");
 const os = require("os");
+const { getBackendUrl } = require("./envConfig");
 
 app.commandLine.appendSwitch("disable-http-cache");
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// APPLICATION GLOBALS
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Store the backend URL in keytar on app startup
+app.whenReady().then(async () => {
+  const backendUrl = getBackendUrl();
+  await keytar.setPassword("ASPENLOG2020", "ConnectionAccount", backendUrl);
+  createMainWindow();
+});
 
-// Function to store the token
+function createMainWindow() {
+  const mainWindow = new BrowserWindow({
+    title: "frontend",
+    width: 1280,
+    height: 720,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: false,
+    },
+  });
+
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.loadFile(path.join(__dirname, "./renderer/login.html"));
+}
+
+// IPC Handlers
 ipcMain.handle("store-token", async (event, token) => {
   await keytar.setPassword("ASPENLOG2020", "TokenAccount", token);
 });
 
-// Function to retrieve the token
 ipcMain.handle("get-token", async () => {
   return await keytar.getPassword("ASPENLOG2020", "TokenAccount");
 });
 
-// Function to store the connection address and port
 ipcMain.handle("store-connection-address", async (event, connectionAddress) => {
   await keytar.setPassword(
     "ASPENLOG2020",
     "ConnectionAccount",
-    connectionAddress,
+    connectionAddress
   );
 });
 
-// Function to retrieve the connection address and port
 ipcMain.handle("get-connection-address", async () => {
   return await keytar.getPassword("ASPENLOG2020", "ConnectionAccount");
 });
@@ -54,40 +67,3 @@ ipcMain.handle("download", (event, { data, filename }) => {
     }
   });
 });
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// START APPLICATION
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function createMainWindow() {
-  const mainWindow = new BrowserWindow({
-    title: "frontend",
-    width: 1280,
-    height: 720,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
-      enableRemoteModule: false,
-      nodeIntegration: false,
-      worldSafeExecuteJavaScript: true,
-      // devTools: false,
-    },
-  });
-
-  // Remove menu bar
-  mainWindow.setMenuBarVisibility(false);
-  mainWindow.loadFile(path.join(__dirname, "./renderer/login.html"));
-}
-
-app.whenReady().then(async () => {
-  await keytar.setPassword(
-    "ASPENLOG2020",
-    "ConnectionAccount",
-    "https://seeda-uoft.shop:42613",
-  );
-  createMainWindow();
-});
-
-try {
-  require("electron-reloader")(module);
-} catch (_) {}

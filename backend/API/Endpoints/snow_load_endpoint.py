@@ -68,7 +68,7 @@ def set_snow_load_endpoint(
         # Store the snow load object in the user's memory slot
         set_user_snow_load(username=username, snow_load=snow_load)
         # Return the snow load object as a JSON string
-        return jsonpickle.encode(snow_load)
+        return jsonpickle.encode(snow_load, unpicklable=False)
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

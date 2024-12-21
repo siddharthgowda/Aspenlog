@@ -22,6 +22,7 @@ from config import get_file_path
 from database.Constants.connection_constants import PrivilegeType
 
 
+
 ########################################################################################################################
 # DATABASE CONNECTION CLASS
 ########################################################################################################################
@@ -64,6 +65,7 @@ class DatabaseConnection:
         """
         # Load the .env file
         load_dotenv(get_file_path("database/.env"))
+        
         # Read and store the values retrieved from the .env file
         self.host = os.getenv("HOST")
         self.port = int(os.getenv("PORT"))
@@ -191,3 +193,4 @@ class DatabaseConnection:
             f"{'READ PASSWORD:':<16} {self.read_password}\n"
             f"{'DATABASE:':<16} {self.database_name}"
         )
+

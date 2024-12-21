@@ -47,7 +47,7 @@ def create_blender_json(num_zones, heights, loads):
     for i in range(num_zones):
         json_str.insert(0, WindZone(h=heights[i], load=loads[i], position=i).to_dict())
 
-    json_str = jsonpickle.encode(json_str)
+    json_str = jsonpickle.encode(json_str, unpicklable=False)
 
     return json_str
 

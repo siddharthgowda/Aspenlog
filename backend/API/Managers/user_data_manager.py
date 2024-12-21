@@ -232,7 +232,7 @@ def set_user_save_data(username: str, json_data: str, id: int = None) -> int:
         for key, value in jsonpickle.decode(json_data).items():
             prev_data[key] = value
 
-        existing_entry.JsonData = jsonpickle.encode(prev_data)
+        existing_entry.JsonData = jsonpickle.encode(prev_data, unpicklable=False)
         existing_entry.DateModified = datetime.now()
     # Create new entry with the current time
     else:
@@ -375,7 +375,7 @@ def get_user_data(username: str):
     :param username: The username of the user
     :return: A JSON representation of the user data
     """
-    return jsonpickle.encode(ALL_USER_DATA.get(username), indent=4)
+    return jsonpickle.encode(ALL_USER_DATA.get(username), indent=4, unpicklable=False)
 
 
 def get_all_user_save_data(username: str):
