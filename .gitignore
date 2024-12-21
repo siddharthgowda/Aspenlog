@@ -11,3 +11,4 @@ root/
 node_modules/
 notes/
 __pycache__/
+*.pyc

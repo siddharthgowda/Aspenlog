@@ -138,7 +138,6 @@ def set_user_save_data_endpoint(
         # If storage for the user does not exist in memory, create a slot for the user
         check_user_exists(username)
         # Set the user's save data
-        print("SET USER SAVE DATA", username, data.json_data, data.id, sep="\n")
         return set_user_save_data(username, data.json_data, data.id)
     # If something goes wrong, raise an error
     except Exception as e:

@@ -58,11 +58,6 @@ def generate_bar_chart_endpoint(username: str = Depends(decode_token)):
     :param username: The username of the user
     :return: A JSON object containing the id of the bar chart and the number of bar charts generated
     """
-    # load_dotenv(get_file_path("/.env"))
-    # is_local = os.getenv("IS_LOCAL") == "true"
-
-    # if is_local:
-    #     return jsonpickle.encode({}, unpicklable=False)
 
     try:
         # If storage for the user does not exist in memory, create a slot for the user

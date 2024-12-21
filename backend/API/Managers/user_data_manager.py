@@ -86,8 +86,6 @@ def set_user_current_save_file(username: str, current_save_file: int) -> None:
     # Set the id of the current save file for the user
     ALL_USER_DATA[username].set_current_save_file(current_save_file)
 
-    print("SET USER CURRENT SAVE FILE", ALL_USER_DATA[username], sep="\n")
-
 
 def set_user_location(username: str, location: Location) -> None:
     """
@@ -350,7 +348,6 @@ def get_user_building(username: str) -> Building:
     :param username: The username of the user
     :return: The building object
     """
-    print("GET USER BUILDING", ALL_USER_DATA.get(username).get_building(), sep="\n")
     return ALL_USER_DATA.get(username).get_building()
 
 
