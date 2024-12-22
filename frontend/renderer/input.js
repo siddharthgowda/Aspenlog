@@ -152,7 +152,7 @@ function vs30Case() {
     .then((response) => response.text())
     .then((data) => {
       document.getElementById(
-        "site-designation-sub-selection-container",
+        "site-designation-sub-selection-container"
       ).innerHTML = data;
     })
     .catch((error) => {
@@ -168,7 +168,7 @@ function xsCase() {
     .then((response) => response.text())
     .then((data) => {
       document.getElementById(
-        "site-designation-sub-selection-container",
+        "site-designation-sub-selection-container"
       ).innerHTML = data;
       toggleMenuColors("#xs-type-selection");
     })
@@ -326,7 +326,7 @@ function multipleMaterialCase() {
  */
 function siteDesignationSelection() {
   let siteDesignationSelectionOptions = document.querySelectorAll(
-    "#site-designation-selection .btn input",
+    "#site-designation-selection .btn input"
   );
   for (let i = 0; i < siteDesignationSelectionOptions.length; i++) {
     siteDesignationSelectionOptions[i].addEventListener("change", function () {
@@ -347,7 +347,7 @@ function siteDesignationSelection() {
  */
 function eaveAndRidgeSelection() {
   let eaveAndRidgeSelectionOptions = document.querySelectorAll(
-    "#eave-and-ridge-selection .btn input",
+    "#eave-and-ridge-selection .btn input"
   );
   for (let i = 0; i < eaveAndRidgeSelectionOptions.length; i++) {
     eaveAndRidgeSelectionOptions[i].addEventListener("change", function () {
@@ -366,7 +366,7 @@ function eaveAndRidgeSelection() {
  */
 function numberHeightZoneSelection() {
   let numberHeightZoneOptions = document.querySelectorAll(
-    "#number-height-zone-selection .btn input",
+    "#number-height-zone-selection .btn input"
   );
   for (let i = 0; i < numberHeightZoneOptions.length; i++) {
     numberHeightZoneOptions[i].addEventListener("change", function () {
@@ -385,7 +385,7 @@ function numberHeightZoneSelection() {
  */
 function dominantOpeningSelection() {
   let dominantOpeningOptions = document.querySelectorAll(
-    "#dominant-opening-selection .btn input",
+    "#dominant-opening-selection .btn input"
   );
   for (let i = 0; i < dominantOpeningOptions.length; i++) {
     dominantOpeningOptions[i].addEventListener("change", function () {
@@ -403,7 +403,7 @@ function dominantOpeningSelection() {
  */
 function materialSelection() {
   let materialSelectionOptions = document.querySelectorAll(
-    "#single-material-selection .btn input",
+    "#single-material-selection .btn input"
   );
   for (let i = 0; i < materialSelectionOptions.length; i++) {
     materialSelectionOptions[i].addEventListener("change", function () {
@@ -725,10 +725,10 @@ function locationCall(address, siteDesignation, seismicValue) {
             document.getElementById("rain-load").textContent = result.rain_load;
 
             document.getElementById(
-              "design-spectral-acceleration-0-2",
+              "design-spectral-acceleration-0-2"
             ).textContent = result.design_spectral_acceleration_0_2;
             document.getElementById(
-              "design-spectral-acceleration-1",
+              "design-spectral-acceleration-1"
             ).textContent = result.design_spectral_acceleration_1;
 
             if (
@@ -740,10 +740,10 @@ function locationCall(address, siteDesignation, seismicValue) {
               document.getElementById("ground-snow-load").textContent = "NA";
               document.getElementById("rain-load").textContent = "NA";
               document.getElementById(
-                "design-spectral-acceleration-0-2",
+                "design-spectral-acceleration-0-2"
               ).textContent = "NA";
               document.getElementById(
-                "design-spectral-acceleration-1",
+                "design-spectral-acceleration-1"
               ).textContent = "NA";
 
               setMap(-70.73964, -8.91217, "unknown");
@@ -765,10 +765,10 @@ function locationCall(address, siteDesignation, seismicValue) {
               document.getElementById("ground-snow-load").textContent = "NA";
               document.getElementById("rain-load").textContent = "NA";
               document.getElementById(
-                "design-spectral-acceleration-0-2",
+                "design-spectral-acceleration-0-2"
               ).textContent = "NA";
               document.getElementById(
-                "design-spectral-acceleration-1",
+                "design-spectral-acceleration-1"
               ).textContent = "NA";
               setMap(-70.73964, -8.91217, "unknown");
             }
@@ -795,7 +795,7 @@ function startLoadingLocation(ids) {
   document.getElementById("location_button").disabled = true;
 
   ids.forEach((id) =>
-    document.getElementById(id).classList.add("skeleton-loader"),
+    document.getElementById(id).classList.add("skeleton-loader")
   );
 
   document.getElementById("save-button").disabled = true;
@@ -1202,18 +1202,18 @@ document
                               let lRoof = getFloatValue("l-roof");
                               let aRoof = getFloatValue("a-roof");
                               let roofUniformDeadLoad = getFloatValue(
-                                "roof-uniform-dead-load",
+                                "roof-uniform-dead-load"
                               );
 
                               const myHeaders = new Headers();
                               myHeaders.append(
                                 "Content-Type",
-                                "application/json",
+                                "application/json"
                               );
                               myHeaders.append("Accept", "application/json");
                               myHeaders.append(
                                 "Authorization",
-                                `Bearer ${token}`,
+                                `Bearer ${token}`
                               );
 
                               const raw = JSON.stringify({
@@ -1244,7 +1244,7 @@ document
                                     // iterate through height zone elevation table data rows
                                     let heightZoneElevationTable =
                                       document.getElementById(
-                                        "height-zone-elevation-table",
+                                        "height-zone-elevation-table"
                                       );
                                     let materialTable =
                                       document.getElementById("material-table");
@@ -1256,15 +1256,14 @@ document
                                     ) {
                                       let zoneNum = parseInt(
                                         heightZoneElevationTable.rows[i]
-                                          .cells[0].innerHTML,
+                                          .cells[0].innerHTML
                                       );
                                       let elevation = parseFloat(
                                         heightZoneElevationTable.rows[i]
-                                          .cells[1].innerHTML,
+                                          .cells[1].innerHTML
                                       );
                                       let load = parseFloat(
-                                        materialTable.rows[i].cells[1]
-                                          .innerHTML,
+                                        materialTable.rows[i].cells[1].innerHTML
                                       );
                                       zones.push([zoneNum, elevation]);
                                       materials.push([zoneNum, load]);
@@ -1273,15 +1272,15 @@ document
                                     const myHeaders = new Headers();
                                     myHeaders.append(
                                       "Content-Type",
-                                      "application/json",
+                                      "application/json"
                                     );
                                     myHeaders.append(
                                       "Accept",
-                                      "application/json",
+                                      "application/json"
                                     );
                                     myHeaders.append(
                                       "Authorization",
-                                      `Bearer ${token}`,
+                                      `Bearer ${token}`
                                     );
 
                                     console.log(defaultZones);
@@ -1306,7 +1305,7 @@ document
 
                                     fetch(
                                       `${connectionAddress}/building`,
-                                      requestOptions,
+                                      requestOptions
                                     )
                                       .then((response) => {
                                         // IMPORTANCE CATEGORY
@@ -1315,7 +1314,7 @@ document
                                           // if low is checked
                                           if (
                                             document.getElementById(
-                                              "importance-category-low-option",
+                                              "importance-category-low-option"
                                             ).checked
                                           ) {
                                             importance_category = "LOW";
@@ -1323,13 +1322,13 @@ document
                                           // if normal is checked
                                           else if (
                                             document.getElementById(
-                                              "importance-category-normal-option",
+                                              "importance-category-normal-option"
                                             ).checked
                                           ) {
                                             importance_category = "NORMAL";
                                           } else if (
                                             document.getElementById(
-                                              "importance-category-high-option",
+                                              "importance-category-high-option"
                                             ).checked
                                           ) {
                                             importance_category = "HIGH";
@@ -1338,7 +1337,7 @@ document
                                           // if post disaster is checked
                                           else if (
                                             document.getElementById(
-                                              "importance-category-post-disaster-option",
+                                              "importance-category-post-disaster-option"
                                             ).checked
                                           ) {
                                             importance_category =
@@ -1348,15 +1347,15 @@ document
                                           const myHeaders = new Headers();
                                           myHeaders.append(
                                             "Content-Type",
-                                            "application/json",
+                                            "application/json"
                                           );
                                           myHeaders.append(
                                             "Accept",
-                                            "application/json",
+                                            "application/json"
                                           );
                                           myHeaders.append(
                                             "Authorization",
-                                            `Bearer ${token}`,
+                                            `Bearer ${token}`
                                           );
 
                                           const raw = JSON.stringify({
@@ -1373,7 +1372,7 @@ document
 
                                           fetch(
                                             `${connectionAddress}/importance_category`,
-                                            requestOptions,
+                                            requestOptions
                                           )
                                             .then((response) => {
                                               if (response.status === 200) {
@@ -1381,12 +1380,12 @@ document
                                                   "load.html";
                                               } else {
                                                 throw new Error(
-                                                  "importance category error",
+                                                  "importance category error"
                                                 );
                                               }
                                             })
                                             .catch((error) =>
-                                              console.error(error),
+                                              console.error(error)
                                             );
                                         } else {
                                           throw new Error("building error");
@@ -1437,7 +1436,7 @@ function save() {
 
           return fetch(
             `${connectionAddress}/get_user_current_save_file`,
-            requestOptions,
+            requestOptions
           )
             .then((response) => {
               if (response.status === 200) {
@@ -1467,7 +1466,7 @@ function save() {
 
               return fetch(
                 `${connectionAddress}/set_user_save_data`,
-                requestOptions,
+                requestOptions
               )
                 .then((response) => response.text())
                 .catch((error) => console.error(error));
@@ -1549,8 +1548,9 @@ document
 
               document.getElementById("building-render-info").style.display =
                 "block";
-              document.getElementById("building-render-info").innerHTML =
-                `Total Elevation: ${totalElevation} m, Roof Angle: ${roofAngle}°`;
+              document.getElementById(
+                "building-render-info"
+              ).innerHTML = `Total Elevation: ${totalElevation} m, Roof Angle: ${roofAngle}°`;
             })
             .catch((error) => {
               console.error(error);
@@ -1722,7 +1722,7 @@ function loadSaveFile() {
 
             fetch(
               `${connectionAddress}/get_user_save_file?id=${id}`,
-              requestOptions,
+              requestOptions
             )
               .then((response) => {
                 if (response.status === 200) {
@@ -1744,7 +1744,7 @@ function loadSaveFile() {
 
                 fetch(
                   `${connectionAddress}/get_user_save_file?id=${id}`,
-                  requestOptions,
+                  requestOptions
                 )
                   .then((response) => {
                     if (response.status === 200) {
@@ -1777,55 +1777,6 @@ function loadSaveFile() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// DROPDOWN MENU
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Set the username in the dropdown menu
- */
-function setUsernameDropdown() {
-  window.api.invoke("get-connection-address").then((connectionAddress) => {
-    window.api
-      .invoke("get-token") // Retrieve the token
-      .then((token) => {
-        const myHeaders = new Headers();
-        myHeaders.append("Accept", "application/json");
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
-        const requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          redirect: "follow",
-        };
-
-        fetch(`${connectionAddress}/get_user_profile`, requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            let data = JSON.parse(result);
-            username = data["username"];
-            document.getElementById("navbarDropdownMenuLink").textContent =
-              username;
-          })
-          .catch((error) => (window.location.href = "login.html"));
-      });
-  });
-}
-
-/**
- * If clicked the user will be logged out and redirected to the login page
- */
-document.getElementById("logout").addEventListener("click", function () {
-  window.api.invoke("store-token", "");
-  window.location.href = "login.html";
-});
-
-/**
- * If clicked the user will be redirected to the profile page */
-document.getElementById("profile").addEventListener("click", function () {
-  window.location.href = "profile.html";
-});
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WINDOW ONLOAD EVENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1833,7 +1784,6 @@ document.getElementById("profile").addEventListener("click", function () {
  * Set up the page on load
  */
 window.onload = function () {
-  setUsernameDropdown();
   loadSaveFile();
 
   setMap(43.66074, -79.39661, "Myhal Centre, Toronto, Ontario, Canada");

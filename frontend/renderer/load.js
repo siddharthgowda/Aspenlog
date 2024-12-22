@@ -1072,21 +1072,6 @@ document
     }
   });
 
-/**
- * When the profile button is clicked, the user is redirected to the profile page
- */
-document.getElementById("profile").addEventListener("click", function () {
-  window.location.href = "profile.html";
-});
-
-/**
- * When the logout button is clicked, the user is logged out and redirected to the login page
- */
-document.getElementById("logout").addEventListener("click", function () {
-  window.api.invoke("store-token", "");
-  window.location.href = "login.html";
-});
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SERIALIZATION
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1277,41 +1262,6 @@ function loadSaveFile() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// DROPDOWN MENU
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * Set the username in the dropdown menu
- */
-function setUsernameDropdown() {
-  window.api.invoke("get-connection-address").then((connectionAddress) => {
-    window.api
-      .invoke("get-token") // Retrieve the token
-      .then((token) => {
-        const myHeaders = new Headers();
-        myHeaders.append("Accept", "application/json");
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
-        const requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          redirect: "follow",
-        };
-
-        fetch(`${connectionAddress}/get_user_profile`, requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            let data = JSON.parse(result);
-            username = data["username"];
-            document.getElementById("navbarDropdownMenuLink").textContent =
-              username;
-          })
-          .catch((error) => (window.location.href = "login.html"));
-      });
-  });
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WINDOW ONLOAD EVENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1320,7 +1270,7 @@ function setUsernameDropdown() {
  */
 window.onload = function () {
   loadSaveFile();
-  setUsernameDropdown();
+  // setUsernameDropdown();
 
   toggleMenuColors("#roof-type-selection");
 
