@@ -708,6 +708,8 @@ function locationCall(address, siteDesignation, seismicValue) {
           seismic_value: `${seismicValue}`,
         });
 
+        console.log({ raw });
+
         let requestOptions = {
           method: "POST",
           headers: myHeaders,
@@ -1296,6 +1298,13 @@ document
                                       materials: materials,
                                     });
 
+                                    console.log({
+                                      num_floor: numFloors,
+                                      h_opening: midHeight,
+                                      zones: zones,
+                                      materials: materials,
+                                    });
+
                                     const requestOptions = {
                                       method: "POST",
                                       headers: myHeaders,
@@ -1309,6 +1318,8 @@ document
                                     )
                                       .then((response) => {
                                         // IMPORTANCE CATEGORY
+                                        const result = response.json();
+                                        console.log({ result });
                                         if (response.status === 200) {
                                           let importance_category = null;
                                           // if low is checked
@@ -1376,8 +1387,8 @@ document
                                           )
                                             .then((response) => {
                                               if (response.status === 200) {
-                                                window.location.href =
-                                                  "load.html";
+                                                // window.location.href =
+                                                //   "load.html";
                                               } else {
                                                 throw new Error(
                                                   "importance category error"
@@ -1633,52 +1644,49 @@ function waitForElement(id, callback) {
  */
 function deserialize(json, section) {
   return new Promise((resolve) => {
-    let objects = JSON.parse(json)[section];
-    let totalElements =
-      Object.keys(objects.radio).length +
-      Object.keys(objects.input).length +
-      Object.keys(objects.table).length;
-    let processedElements = 0;
-
-    // go through all the radio
-    for (let id in objects.radio) {
-      waitForElement(id, function (radio) {
-        if (radio.value === objects.radio[id]) {
-          radio.click();
-        }
-        processedElements++;
-        if (processedElements === totalElements) {
-          resolve();
-        }
-      });
-    }
-
-    // go through all the input
-    for (let id in objects.input) {
-      waitForElement(id, function (input) {
-        input.value = "";
-        input.focus();
-        let value = objects.input[id];
-        for (let i = 0; i < value.length; i++) {
-          input.value = value;
-        }
-        processedElements++;
-        if (processedElements === totalElements) {
-          resolve();
-        }
-      });
-    }
-
-    // go through all the tables
-    for (let id in objects.table) {
-      waitForElement(id, function (table) {
-        table.innerHTML = objects.table[id];
-        processedElements++;
-        if (processedElements === totalElements) {
-          resolve();
-        }
-      });
-    }
+    // let objects = JSON.parse(json)[section];
+    // let totalElements =
+    //   Object.keys(objects.radio).length +
+    //   Object.keys(objects.input).length +
+    //   Object.keys(objects.table).length;
+    // let processedElements = 0;
+    // // go through all the radio
+    // for (let id in objects.radio) {
+    //   waitForElement(id, function (radio) {
+    //     if (radio.value === objects.radio[id]) {
+    //       radio.click();
+    //     }
+    //     processedElements++;
+    //     if (processedElements === totalElements) {
+    //       resolve();
+    //     }
+    //   });
+    // }
+    // // go through all the input
+    // for (let id in objects.input) {
+    //   waitForElement(id, function (input) {
+    //     input.value = "";
+    //     input.focus();
+    //     let value = objects.input[id];
+    //     for (let i = 0; i < value.length; i++) {
+    //       input.value = value;
+    //     }
+    //     processedElements++;
+    //     if (processedElements === totalElements) {
+    //       resolve();
+    //     }
+    //   });
+    // }
+    // // go through all the tables
+    // for (let id in objects.table) {
+    //   waitForElement(id, function (table) {
+    //     table.innerHTML = objects.table[id];
+    //     processedElements++;
+    //     if (processedElements === totalElements) {
+    //       resolve();
+    //     }
+    //   });
+    // }
   });
 }
 

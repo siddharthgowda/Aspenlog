@@ -427,6 +427,7 @@ function getWindLoads() {
         fetch(`${connectionAddress}/set_wind_load`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
+            console.log({ result });
             const myHeaders = new Headers();
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Authorization", `Bearer ${token}`);
@@ -441,6 +442,7 @@ function getWindLoads() {
               .then((response) => response.json())
               .then((result) => {
                 let heightZoneData = JSON.parse(result);
+                console.log(heightZoneData);
 
                 for (let zoneNum in heightZoneData) {
                   let innerZones =
@@ -1131,39 +1133,37 @@ function serialize() {
  */
 function deserialize(json, section) {
   return new Promise((resolve) => {
-    let objects = JSON.parse(json)[section];
-    let totalElements =
-      Object.keys(objects.radio).length + Object.keys(objects.input).length;
-    let processedElements = 0;
-
-    // go through all the radio
-    for (let id in objects.radio) {
-      waitForElement(id, function (radio) {
-        if (radio.value === objects.radio[id]) {
-          radio.click();
-        }
-        processedElements++;
-        if (processedElements === totalElements) {
-          resolve();
-        }
-      });
-    }
-
-    // go through all the input
-    for (let id in objects.input) {
-      waitForElement(id, function (input) {
-        input.value = "";
-        input.focus();
-        let value = objects.input[id];
-        for (let i = 0; i < value.length; i++) {
-          input.value = value;
-        }
-        processedElements++;
-        if (processedElements === totalElements) {
-          resolve();
-        }
-      });
-    }
+    // let objects = JSON.parse(json)[section];
+    // let totalElements =
+    //   Object.keys(objects.radio).length + Object.keys(objects.input).length;
+    // let processedElements = 0;
+    // // go through all the radio
+    // for (let id in objects.radio) {
+    //   waitForElement(id, function (radio) {
+    //     if (radio.value === objects.radio[id]) {
+    //       radio.click();
+    //     }
+    //     processedElements++;
+    //     if (processedElements === totalElements) {
+    //       resolve();
+    //     }
+    //   });
+    // }
+    // // go through all the input
+    // for (let id in objects.input) {
+    //   waitForElement(id, function (input) {
+    //     input.value = "";
+    //     input.focus();
+    //     let value = objects.input[id];
+    //     for (let i = 0; i < value.length; i++) {
+    //       input.value = value;
+    //     }
+    //     processedElements++;
+    //     if (processedElements === totalElements) {
+    //       resolve();
+    //     }
+    //   });
+    // }
   });
 }
 

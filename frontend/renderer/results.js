@@ -290,23 +290,22 @@ function serialize() {
  */
 function deserialize(json, section) {
   return new Promise((resolve) => {
-    let objects = JSON.parse(json)[section];
-    let totalElements =
-      Object.keys(objects.radio).length + Object.keys(objects.input).length;
-    let processedElements = 0;
-
-    // go through all the radio
-    for (let id in objects.radio) {
-      waitForElement(id, function (radio) {
-        if (radio.value === objects.radio[id]) {
-          radio.click();
-        }
-        processedElements++;
-        if (processedElements === totalElements) {
-          resolve();
-        }
-      });
-    }
+    // let objects = JSON.parse(json)[section];
+    // let totalElements =
+    //   Object.keys(objects.radio).length + Object.keys(objects.input).length;
+    // let processedElements = 0;
+    // // go through all the radio
+    // for (let id in objects.radio) {
+    //   waitForElement(id, function (radio) {
+    //     if (radio.value === objects.radio[id]) {
+    //       radio.click();
+    //     }
+    //     processedElements++;
+    //     if (processedElements === totalElements) {
+    //       resolve();
+    //     }
+    //   });
+    // }
   });
 }
 

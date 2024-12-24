@@ -137,7 +137,7 @@ document
             )
               .then((response) => {
                 if (response.status === 200) {
-                  window.location.href = "input.html";
+                  window.location.href = "site_params.html";
                 } else {
                   throw new Error("Set User Current Save File Error");
                 }
@@ -200,7 +200,7 @@ document.getElementById("new-button").addEventListener("click", function () {
             )
               .then((response) => {
                 if (response.status === 200) {
-                  window.location.href = "input.html";
+                  window.location.href = "site_params.html";
                 } else {
                   throw new Error("Set User Current Save File Error");
                 }
@@ -276,7 +276,7 @@ document.getElementById("json-input").addEventListener("change", function (e) {
               )
                 .then((response) => {
                   if (response.status === 200) {
-                    window.location.href = "input.html";
+                    window.location.href = "site_params.html";
                   } else {
                     throw new Error("Set User Current Save File Error");
                   }
@@ -332,12 +332,14 @@ window.onload = function () {
                   date.toLocaleDateString() + " " + date.toLocaleTimeString();
                 PROJECT_ARRAY.push(item.ID);
 
+                console.log({ data });
+
                 // if there is a corrupted save file, skip it
                 try {
                   const html = `
                             <div class="list-group-item d-flex justify-content-between align-items-center" id="${index}">
                                 <div>
-                                    <h4 class="list-group-item-heading">${data["input_page"]["input"]["project-name"]}</h4>
+                                    <h4 class="list-group-item-heading">${data["projectName"]}</h4>
                                     <p class="list-group-item-text">${formattedDate}</p>
                                 </div>
                                 <div class="row">

@@ -1,4 +1,14 @@
-const componentStyle = `
+/**
+ navbar.js
+This file is the default navbar for most pages viewable after login. There is an option to return home or logout.
+
+Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
+By using this code, you agree to abide by the terms and conditions in those files.
+
+Author: Siddharth Gowda [https://github.com/siddharthgowda]
+ **/
+
+const componentStyleNavbar = `
   <style>
   :host {
       display: block;
@@ -50,8 +60,8 @@ const componentStyle = `
   </style>
 `;
 
-const componentHTML = `
-${componentStyle}
+const componentHTMLNavbar = `
+${componentStyleNavbar}
 <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
       <img
         src="../assets/images/logo%20(Large).png"
@@ -89,7 +99,7 @@ class CustomNavbar extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.shadowRoot.innerHTML = componentHTML;
+    this.shadowRoot.innerHTML = componentHTMLNavbar;
   }
 
   connectedCallback() {

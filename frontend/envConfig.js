@@ -9,4 +9,4 @@ const getDisableHttpCache = () => {
   return process.env.DISABLE_HTTP_CACHE === "true";
 };
 
-module.exports = { getBackendUrl };
+module.exports = { getBackendUrl, getDisableHttpCache };
