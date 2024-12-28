@@ -77,7 +77,7 @@ class AlertBox extends HTMLElement {
   /**
    * Displays the alert box with a given error message.
    * @param {string} msg - The message to display.
-   * @param {string} type - The type of alert: [error: "e", success: "s", notification: "n"]. Default is ERROR.
+   * @param {string} type - The type of alert: [ERROR, SUCCESS, NOTIFICATION]. Default is ERROR.
    */
   alert(msg, type = ERROR) {
     const alertBox = this.shadowRoot.querySelector("#alert-box-container");
