@@ -26,6 +26,11 @@ let isLocationDataSet = false;
 
 let MAP;
 
+// THESE CONSTANTS ARE AUTO IMPORTED FROM alert_box.js
+// const ERROR = "ERROR";
+// const SUCCESS = "SUCCESS";
+// const NOTIFICATION = "NOTIFICATION";
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ON PAGE LOAD (First Function Ran)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +136,10 @@ document
   });
 
 document.getElementById("save-button").addEventListener("click", async () => {
+  const alertBox = document.getElementById("alert-box");
+  alertBox.alert("Saving...", NOTIFICATION);
   await save();
+  alertBox.hide();
 });
 
 // Next Button
@@ -165,9 +173,12 @@ document.getElementById("next-button").addEventListener("click", async () => {
     return;
   }
 
+  const alertBox = document.getElementById("alert-box");
+  alertBox.alert("Proccessing and Saving data", NOTIFICATION);
   // Sending importance category to backend
   await importanceCategoryCall(importanceCategory);
   await save();
+  alertBox.hide();
   window.location.href = "building_geometry.html";
 });
 
