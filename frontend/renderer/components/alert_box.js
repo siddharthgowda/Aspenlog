@@ -31,9 +31,9 @@ const alertBoxStyle = `
           }
 
           .success {
-            border: 1px solid #ffeeba;
-            background-color: #fff3cd;
-            color: #856404;
+            border: 1px solid #c3e6cb;
+            background-color: #d4edda;
+            color: #155724;
           }
   
           .alert-box.visible {
@@ -68,10 +68,10 @@ class AlertBox extends HTMLElement {
   connectedCallback() {
     const alertBox = this.shadowRoot.querySelector("#alert-box-container");
     alertBox.classList.remove("visible");
-    alertBox.classList.add("hide");
     alertBox.classList.remove("error");
     alertBox.classList.remove("success");
     alertBox.classList.remove("notification");
+    alertBox.classList.add("hide");
   }
 
   /**
@@ -91,7 +91,6 @@ class AlertBox extends HTMLElement {
     alertBox.classList.remove("error");
     alertBox.classList.remove("success");
     alertBox.classList.remove("notification");
-
     if (type == ERROR) {
       console.log(ERROR);
       alertBox.classList.add("error");
@@ -108,7 +107,7 @@ class AlertBox extends HTMLElement {
    * Hides alert when no longer need for the application user
    */
   hide() {
-    // setting timeout (250 ms) so alert is not remove too fast
+    // setting timeout so alert is not removed too fast
     // to make sure it is not garing on the eye
     setTimeout(() => {
       const alertBox = this.shadowRoot.querySelector("#alert-box-container");
