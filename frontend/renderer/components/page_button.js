@@ -1,3 +1,13 @@
+/**
+ page_button.js
+ This is a reusable button that takes in the name of an html page and switches to it on click.
+
+Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
+By using this code, you agree to abide by the terms and conditions in those files.
+
+Author: Siddharth Gowda [https://github.com/siddharthgowda]
+ **/
+
 const componentStylePageButton = `
   <style>
     .page-button {

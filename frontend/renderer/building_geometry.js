@@ -136,7 +136,7 @@ document
 // Send Building Geometry and Height Zone Information to backend
 // Go to Next Page (choose engineer type)
 document.getElementById("next-button").addEventListener("click", async () => {
-  const alertbox = document.getElementById("error-alert-box");
+  const alertbox = document.getElementById("alert-box");
 
   const width = parseFloat(document.getElementById("width").value);
   if (!width || width <= 0) {

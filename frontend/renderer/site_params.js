@@ -83,7 +83,7 @@ document
     console.log(chosenDesignation);
     const address = document.getElementById("address");
     if (!address.value || !chosenDesignation) {
-      const alertBox = document.getElementById("error-alert-box");
+      const alertBox = document.getElementById("alert-box");
       alertBox.alert(
         "Please enter the address and all site designation details. If using Vs30, ensure the value is between 140 and 3000."
       );
@@ -109,7 +109,7 @@ document
     //     "Longitude",
     //   ];
     if (result?.detail) {
-      const alertBox = document.getElementById("error-alert-box");
+      const alertBox = document.getElementById("alert-box");
       alertBox.alert("Address Not Found. Maybe use a postal code");
       return;
     }
@@ -149,18 +149,18 @@ document.getElementById("next-button").addEventListener("click", async () => {
   console.log({ importanceCategory, projectNameValue, isLocationDataSet });
 
   if (!projectNameValue) {
-    const alertBox = document.getElementById("error-alert-box");
+    const alertBox = document.getElementById("alert-box");
     alertBox.alert("Please Choose A Project Name");
     return;
   }
   if (!isLocationDataSet) {
-    const alertBox = document.getElementById("error-alert-box");
+    const alertBox = document.getElementById("alert-box");
     alertBox.alert("Please Hit the Get Sesmic and Climate Data Button");
     return;
   }
 
   if (!importanceCategory) {
-    const alertBox = document.getElementById("error-alert-box");
+    const alertBox = document.getElementById("alert-box");
     alertBox.alert("Please Choose An Importance Category");
     return;
   }

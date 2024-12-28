@@ -1,3 +1,15 @@
+/**
+ alertbox.js
+
+This file contains the reusable alert component. It comes in three styles, error to display user errors, success to display
+successful requests, and notification for basic information, like loading states.
+
+Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
+By using this code, you agree to abide by the terms and conditions in those files.
+
+Author: Siddharth Gowda [https://github.com/siddharthgowda]
+ **/
+
 const errorAlertBoxStyle = `
         <style>
           .alert-box {
@@ -31,16 +43,16 @@ const errorAlertBoxStyle = `
         </style>
 `;
 
-const errorAlertBoxHTML = `
+const alertBoxHTML = `
 ${errorAlertBoxStyle}
         <div class="alert-box error" id="alertBox">
           <span id="msg">An error occurred.</span>
         </div>
 `;
 
-const ERROR = "e";
-const SUCCESS = "s";
-const NOTIFICATION = "n";
+const ERROR = "ERROR";
+const SUCCESS = "SUCCESS";
+const NOTIFICATION = "NOTIFICATION";
 
 class ErrorAlertBox extends HTMLElement {
   constructor() {
@@ -53,7 +65,7 @@ class ErrorAlertBox extends HTMLElement {
   /**
    * Displays the alert box with a given error message.
    * @param {string} msg - The message to display.
-   * @param {string} type - The type of alert [error: "e", success: "s", notification: "n"]
+   * @param {string} type - The type of alert: [error: "e", success: "s", notification: "n"]. Default is ERROR.
    */
   alert(msg, type = ERROR) {
     const alertBox = this.shadowRoot.querySelector("#alertBox");
@@ -85,4 +97,4 @@ class ErrorAlertBox extends HTMLElement {
   }
 }
 
-customElements.define("error-alert-box", ErrorAlertBox);
+customElements.define("alert-box", alertBoxHTML);

@@ -1,3 +1,14 @@
+/**
+ custom_table.js
+This file is the code for a rebuable table component. The engineer needs to input the column headers and 
+a list of rows (i.e. a list of list). This table is not editable by users and is display only.
+
+Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
+By using this code, you agree to abide by the terms and conditions in those files.
+
+Author: Siddharth Gowda [https://github.com/siddharthgowda]
+ **/
+
 const customTableStyle = `
         <style>
           table {
@@ -38,7 +49,8 @@ class CustomTable extends HTMLElement {
   /**
    * Populates the table with data from a list of headers and a matrixData (list of lists).
    * @param {Array<string>} headers - The list of column names.
-   * @param {Array<Array<any>>} matrixData - The input data to render in the table.
+   * @param {Array<Array<any>>} matrixData - The input data to render in the table. For format should be a
+   * list of lists where each inner list represents a row.
    */
   render(headers, matrixData) {
     this.headers = headers;
