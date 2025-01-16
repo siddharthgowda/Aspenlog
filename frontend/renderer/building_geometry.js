@@ -141,7 +141,7 @@ document.getElementById("next-button").addEventListener("click", async () => {
     document.getElementById("roof-uniform-dead-load").value
   );
 
-  if (!aRoof || 0 >= aRoof || aRoof >= 360) {
+  if ((!aRoof && aRoof != 0) || 0 > aRoof || aRoof > 360) {
     alertbox.alert("Please Enter A Valid roof angle [0, 360]");
     return;
   } else if (
