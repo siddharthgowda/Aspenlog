@@ -38,11 +38,10 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
                     <input class="form-control" id="width" type="number" name="building_width" />
                 </div>
 
-                <!-- Number of Floors -->
-                <div class="mb-3">
-                    <label for="width">Number of Floors</label>
-                    <p>This will be used in seismic calculation.</p>
-                    <input class="form-control" id="num-floors" type="number" name="num_floors" />
+                <!-- Floor Elevation Inputs -->
+                <div class="mb-3" id="floor-elevation-input-container">
+                    <script src="./components/floor_elevation_input.js"></script>
+                    <floor-elevation-input id="floor-elevation-input"></floor-elevation-input>
                 </div>
 
                 <!-- Tallest Cladding Height -->
@@ -95,66 +94,19 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
                     <input class="form-control" id="roof-uniform-dead-load" type="number" />
                 </div>
 
-                <!-- Eave and Ridge -->
-                <div class="mb-3">
-                    <label for="eave-ridge">Eave and Ridge</label>
-                    <p>Does the building have eave and ridge?</p>
-                    <select class="form-control" id="eave-ridge" name="eave_ridge">
-                        <option value="" disabled selected>Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-                <!-- If Yes to Eave and Ridge -->
-                <div class="hidden" id="eave-ridge-dimension-container">
-                    <p>Building height will be computed as H=(h_eave+h_ridge)/2</p>
-                    <div class="mb-3">
-                        <label for="eave-height">Eave Height</label>
-                        <input class="form-control" id="eave-height" type="number" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="ridge-height">Ridge Height</label>
-                        <input class="form-control" id="ridge-height" type="number" />
-                    </div>
-                </div>
-
-                <!-- if No to Eave and Ridge -->
-                <div class="mb-3 hidden" id="height-container">
-                    <label for="height">Building Height above Grade (m)</label>
-                    <p>Use height of the tallest part of the building</p>
-                    <input class="form-control" id="height" type="number" />
-                </div>
-
                 <!-- Height Zone Configuration -->
                 <div class="mb-3">
                     <label for="height-zone-config">Height Zone Configuration</label>
-                    <p>The height of each zone is set to X meters, inputted by you. Meaning, the total number of height
-                        zones
-                        is
-                        calculated as the ceiling of H/X.</p>
-                    <p>Choose the size of each height zone</p>
-                    <input class="form-control" id="height-zone-dimension" type="number" />
+                    <p>Click the Button Below to Generate An Editable Height Zone Table</p>
+                </div>
+                <div class="mb-3 hidden" id="height-zone-table-container">
+                    <script src="./components/height_zone_table.js"></script>
+                    <height-zone-table id="height-zone-table"></height-zone-table>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary my-2" id="height-zone-button">Generate Height Zone Table</button>
                 </div>
 
-                <div class="mb-3 hidden" id="height-zone-table-container">
-                    <script src="./components/custom_table.js"></script>
-                    <custom-table id="height-zone-table"></custom-table>
-                </div>
-
-                <!-- Apply Material to All Zones -->
-                 <!-- TODO: Ask others How to Do Apply Material For Now, I Will Just Use a Constant -->
-                <!-- <div class="mb-3">
-                    <label for="apply-material">Apply Material to All Zones</label>
-                    <p>Will the material be applied to all height zones?</p>
-                    <select class="form-control" id="apply-material" name="apply_material">
-                        <option value="" disabled selected>Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div> -->
                 <div class="mb-3">
                     <label for="apply-material">Material Weight KPA</label>
                     <p>Will be applied to all height zones</p>

@@ -163,8 +163,7 @@ document.getElementById("new-button").addEventListener("click", function () {
         myHeaders.append("Authorization", `Bearer ${token}`);
 
         const raw = JSON.stringify({
-          json_data:
-            '{"input_page":{"radio":{},"input":{"project-name":"New Project"},"table":{}}}',
+          json_data: '{"projectName":"New Project"}',
           id: null,
         });
 

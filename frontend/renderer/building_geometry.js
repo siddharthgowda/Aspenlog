@@ -24,92 +24,41 @@ window.onload = function () {};
 // Events and Defined Event Functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// When Dropdown value changes, the correct option for inputting building
-// hieght data should be displayed
-document.getElementById("eave-ridge").addEventListener("change", async () => {
-  const hasEaveRidge = document.getElementById("eave-ridge").value == "yes";
-  const eaveRidgeContainer = document.getElementById(
-    "eave-ridge-dimension-container"
-  );
-  const heightContainer = document.getElementById("height-container");
-
-  if (hasEaveRidge) {
-    heightContainer.classList.remove("visible");
-    heightContainer.classList.add("hidden");
-
-    eaveRidgeContainer.classList.remove("hidden");
-    eaveRidgeContainer.classList.add("visible");
-  } else {
-    heightContainer.classList.add("visible");
-    heightContainer.classList.remove("hidden");
-
-    eaveRidgeContainer.classList.add("hidden");
-    eaveRidgeContainer.classList.remove("visible");
-  }
-});
-
-// Next Two Events will be used to calculate
-
 // Display Height Zone Table if all height zone related data is inputted and is valid
 document
   .getElementById("height-zone-button")
   .addEventListener("click", async () => {
+    const alertbox = document.getElementById("alert-box");
+    const floorElevationInput = document.getElementById(
+      "floor-elevation-input"
+    );
     const heightZoneTable = document.getElementById("height-zone-table");
     const heightZoneTableContainer = document.getElementById(
       "height-zone-table-container"
     );
 
-    const heightZoneValue = parseFloat(
-      document.getElementById("height-zone-dimension").value
-    );
+    console.log({
+      valid: floorElevationInput.validateData(),
+      data: floorElevationInput.data(),
+    });
 
-    const hasEaveRidge = document.getElementById("eave-ridge").value == "yes";
-    let height = -1;
-    // Get and Calculate Height Value (if inputs are valid!)
-    if (hasEaveRidge) {
-      const eaveHeight = parseFloat(
-        document.getElementById("eave-height").value
+    if (!floorElevationInput.validateData()) {
+      alertbox.alert(
+        "Please Enter Valid Floor Elevations. Ensure that Sea Level < all floor elevations"
       );
-      const ridgeHeight = parseFloat(
-        document.getElementById("ridge-height").value
-      );
-      height =
-        eaveHeight && ridgeHeight && eaveHeight > 0 && ridgeHeight > 0
-          ? (eaveHeight + ridgeHeight) / 2
-          : -1;
-    } else {
-      const inputtedHeight = parseFloat(
-        document.getElementById("height").value
-      );
-      height = inputtedHeight && inputtedHeight > 0 ? inputtedHeight : -1;
-    }
-
-    console.log({ heightZoneValue, height });
-
-    if (!heightZoneValue || heightZoneValue <= 0 || !height || height <= 0) {
-      heightZoneTableContainer.classList.add("hidden");
-      heightZoneTableContainer.classList.remove("visible");
-      // Silently fail, user innvalid input will be notified when they try to hit next
       return;
     }
 
-    // Create Height Zone Table
-    const headers = ["Height Zone", "Elevation"];
-    const numOfZones = Math.ceil(height / heightZoneValue);
-    let data = [];
+    const floorsElevationData = floorElevationInput
+      .data()
+      .tableData.map(({ floor, elevation }) => {
+        const seaLevel = floorElevationInput.data().seaLevel;
+        return [floor, elevation - seaLevel];
+      });
 
-    for (let i = 0; i < numOfZones; i++) {
-      data.push([i + 1, Math.min(height, (i + 1) * heightZoneValue)]);
-    }
-    console.log({
-      headers,
-      numOfZones,
-      data,
-      heightZoneTable,
-    });
     heightZoneTableContainer.classList.remove("hidden");
-    heightZoneTableContainer.classList.add("visible");
-    heightZoneTable.render(headers, data);
+    heightZoneTableContainer.classList.remove("visible");
+    heightZoneTable.render(floorsElevationData);
   });
 
 // If dominant hieght exists, display dropdown to input mid height information
@@ -137,6 +86,7 @@ document
 // Go to Next Page (choose engineer type)
 document.getElementById("next-button").addEventListener("click", async () => {
   const alertbox = document.getElementById("alert-box");
+  const floorElevationInput = document.getElementById("floor-elevation-input");
 
   const width = parseFloat(document.getElementById("width").value);
   if (!width || width <= 0) {
@@ -144,7 +94,12 @@ document.getElementById("next-button").addEventListener("click", async () => {
     return;
   }
 
-  const numFloors = parseInt(document.getElementById("num-floors").value);
+  if (!floorElevationInput.validateData()) {
+    alertbox.alert("Please Enter valid floor elevation dimensions");
+    return;
+  }
+
+  const numFloors = parseInt(floorElevationInput.data().numFloors);
   if (!numFloors || numFloors <= 0) {
     alertbox.alert("Please Enter A Valid floor number value");
     return;
@@ -186,8 +141,9 @@ document.getElementById("next-button").addEventListener("click", async () => {
     document.getElementById("roof-uniform-dead-load").value
   );
 
-  if (!aRoof || 0 > aRoof || aRoof > 360) {
-    alertbox.alert("Please Enter A Valid roof angle (0, 360)");
+  if (!aRoof || 0 >= aRoof || aRoof >= 360) {
+    alertbox.alert("Please Enter A Valid roof angle [0, 360]");
+    return;
   } else if (
     !wRoof ||
     wRoof <= 0 ||
@@ -201,49 +157,12 @@ document.getElementById("next-button").addEventListener("click", async () => {
     return;
   }
 
-  // eave and ridge
-  let eaveHeight = parseFloat(document.getElementById("eave-height").value);
-  let ridgeHeight = parseFloat(document.getElementById("ridge-height").value);
-  if (
-    document.getElementById("eave-ridge").value == "yes" &&
-    (!eaveHeight || !ridgeHeight || eaveHeight <= 0 || ridgeHeight <= 0)
-  ) {
-    alertbox.alert("Please Enter Valid Eave and Ridge Information");
-    return;
-  }
-
-  let height = parseFloat(document.getElementById("height").value);
-  if (
-    document.getElementById("eave-ridge").value != "yes" &&
-    (!height || height <= 0)
-  ) {
-    alertbox.alert("Please enter a valid height");
-    return;
-  }
-
-  // only letting either hieght or eave have a value
-  if (document.getElementById("eave-ridge").value == "yes") {
-    height = null;
-  } else {
-    eaveHeight = null;
-    ridgeHeight = null;
-  }
-
   // height zone configuration and table
-  const heightZoneValue = parseFloat(
-    document.getElementById("height-zone-dimension").value
-  );
-
-  if (!heightZoneValue || heightZoneValue <= 0) {
-    alertbox.alert("Please enter a valid height zone size");
-    return;
-  }
 
   const zoneTable = document.getElementById("height-zone-table");
-  if (zoneTable.data().matrixData == []) {
-    alertbox.alert(
-      "Please click the get button in the height zone configuration"
-    );
+
+  if (!zoneTable.validateData()) {
+    alertbox.alert("Please enter valid height zone data.");
     return;
   }
 
@@ -258,19 +177,16 @@ document.getElementById("next-button").addEventListener("click", async () => {
   }
 
   // Performing API Requests
-  const dimensionResult = await dimensionsCall(
-    width,
-    height,
-    eaveHeight,
-    ridgeHeight
-  );
+  const height = zoneTable.zones()[zoneTable.zones().length - 1][1];
+  const dimensionResult = await dimensionsCall(width, height);
   console.log({ dimensionResult });
   const claddingResult = await claddingCall(topCladding, bottomCladding);
   console.log({ claddingResult });
   const roofResult = await roofCall(wRoof, lRoof, aRoof, deadLoadRoof);
   console.log({ roofResult });
 
-  const zones = zoneTable.data().matrixData;
+  const zones = zoneTable.zones();
+  console.log({ zones });
   const zoneWeights = zones.map(([zoneNum, elevation]) => {
     return [zoneNum, materialWeightConstant];
   });
@@ -278,19 +194,11 @@ document.getElementById("next-button").addEventListener("click", async () => {
   const buildingResult = await buildingCall(
     numFloors,
     midHeight,
-    zoneTable.data().matrixData,
+    zones,
     zoneWeights
   );
 
   console.log({ buildingResult });
-
-  // TODO: CHANGE THIS! IT IS A TOTAL HACK
-  if (buildingResult?.detail || buildingResult?.detail == "") {
-    alertbox.alert(
-      "Please click the get button in the height zone configuration"
-    );
-    return;
-  }
 
   window.location.href = "load.html";
 });
@@ -298,7 +206,14 @@ document.getElementById("next-button").addEventListener("click", async () => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // API Calls
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-async function dimensionsCall(width, height, eaveHeight, ridgeHeight) {
+// TODO: eaveHeight and ridgeHeight should not exists in general since it does not pertain to high rises
+// this should be changed in the backend in the future
+async function dimensionsCall(
+  width,
+  height,
+  eaveHeight = null,
+  ridgeHeight = null
+) {
   try {
     const connectionAddress = await window.api.invoke("get-connection-address");
     const token = await window.api.invoke("get-token");
