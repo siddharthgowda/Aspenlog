@@ -44,11 +44,23 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
                     <floor-elevation-input id="floor-elevation-input"></floor-elevation-input>
                 </div>
 
-                <!-- Tallest Cladding Height -->
+                <!-- Height Zone Configuration -->
                 <div class="mb-3">
-                    <label for="top-height">Top Cladding Height (m)</label>
-                    <p>Use height of the tallest part of the cladding components (i.e., where it ends).</p>
-                    <input class="form-control" id="top-height" type="number" name="top_cladding_height" />
+                    <label for="height-zone-config">Height Zone Configuration</label>
+                    <p>Click the Button Below to Generate An Editable Height Zone Table</p>
+                </div>
+                <div class="mb-3 hidden" id="height-zone-table-container">
+                    <script src="./components/height_zone_table.js"></script>
+                    <height-zone-table id="height-zone-table"></height-zone-table>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary my-2" id="height-zone-button">Generate Height Zone Table</button>
+                </div>
+
+                <div class="mb-3">
+                    <label for="apply-material">Material Weight KPA</label>
+                    <p>Will be applied to all height zones</p>
+                    <input class="form-control" id="material-weight-constant" type="number" />
                 </div>
 
                 <!-- Lowest Cladding Height -->
@@ -56,6 +68,13 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
                     <label for="bottom-height">Bottom Cladding Height (m)</label>
                     <p>Use height of the lowest part of the cladding components (i.e., where it starts).</p>
                     <input class="form-control" id="bottom-height" type="number" name="bottom_cladding_height" />
+                </div>
+
+                <!-- Tallest Cladding Height -->
+                <div class="mb-3">
+                    <label for="top-height">Top Cladding Height (m)</label>
+                    <p>Use height of the tallest part of the cladding components (i.e., where it ends).</p>
+                    <input class="form-control" id="top-height" type="number" name="top_cladding_height" />
                 </div>
 
                 <!-- Dominant Opening -->
@@ -92,25 +111,6 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
                 <div class="mb-3">
                     <label for="roof-uniform-dead-load">Roof Uniform Dead Load (kPa)</label>
                     <input class="form-control" id="roof-uniform-dead-load" type="number" />
-                </div>
-
-                <!-- Height Zone Configuration -->
-                <div class="mb-3">
-                    <label for="height-zone-config">Height Zone Configuration</label>
-                    <p>Click the Button Below to Generate An Editable Height Zone Table</p>
-                </div>
-                <div class="mb-3 hidden" id="height-zone-table-container">
-                    <script src="./components/height_zone_table.js"></script>
-                    <height-zone-table id="height-zone-table"></height-zone-table>
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-primary my-2" id="height-zone-button">Generate Height Zone Table</button>
-                </div>
-
-                <div class="mb-3">
-                    <label for="apply-material">Material Weight KPA</label>
-                    <p>Will be applied to all height zones</p>
-                    <input class="form-control" id="material-weight-constant" type="number" />
                 </div>
         </div>
 

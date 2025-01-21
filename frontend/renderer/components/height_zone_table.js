@@ -92,6 +92,7 @@ class HeightZoneTable extends HTMLElement {
       input.className = "height-zone-input";
       input.min = "1";
       input.max = data.length.toString();
+      input.value = index + 1;
       heightZoneCell.appendChild(input);
 
       tr.appendChild(floorNumberCell);
@@ -119,11 +120,9 @@ class HeightZoneTable extends HTMLElement {
         return false;
       }
 
-      if (value < previousZone || value > previousZone + 1) {
+      if (value < previousZone) {
         console.error(
-          `Height zone numbers must be non-descending and increase at most by 1. Error at row ${
-            i + 1
-          }.`
+          `Height zone numbers must be non-descending. Error at row ${i + 1}.`
         );
         return false;
       }
@@ -165,7 +164,9 @@ class HeightZoneTable extends HTMLElement {
     });
 
     // Reverse zones back to maintain order
-    return zones.reverse();
+    return zones.reverse().map((zone, index) => {
+      return [index + 1, zone[1]];
+    });
   }
 }
 

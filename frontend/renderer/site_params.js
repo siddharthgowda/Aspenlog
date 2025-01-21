@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // the map used for location of climatic and seismic data
 const CLIMATE_SESMIC_TABLE_HEADER = [
-  "Wind Velocity Pressure, kPa, 1/50 (q)",
+  "Wind Pressure, kPa, 1/50 (q)",
   "Ground Snow Load, kPa, 1/50 (Ss)",
   "Rain Load, kPa, 1/50 (Sr)",
   "Design Spectral Acceleration at 0.2 sec",

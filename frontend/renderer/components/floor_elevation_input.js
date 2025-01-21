@@ -66,7 +66,11 @@ class FloorElevationTable extends HTMLElement {
     });
     tableHead.appendChild(headerRow);
 
-    for (let i = 0; i < floors; i++) {
+    // PLEASE SEE!
+    // Content is displayed to user in reverse (from floor n to floor 1)
+    // put stored in component in order of floor 1 to floor n
+
+    for (let i = floors - 1; i >= 0; i--) {
       const row = document.createElement("tr");
 
       const floorCell = document.createElement("td");
@@ -97,11 +101,12 @@ class FloorElevationTable extends HTMLElement {
   }
 
   validateData() {
+    console.log({ evd: this.elevationData });
     for (let i = 1; i < this.elevationData.length; i++) {
       if (
         this.elevationData[i] !== null &&
         this.elevationData[i - 1] !== null &&
-        this.elevationData[i] <= this.elevationData[i - 1]
+        this.elevationData[i] < this.elevationData[i - 1]
       ) {
         return false;
       }
