@@ -89,6 +89,7 @@ class FloorElevationTable extends HTMLElement {
 
       const elevationCell = document.createElement("td");
       const input = document.createElement("input");
+      input.disabled = true;
       input.type = "number";
       input.min = "0";
       input.step = "0.01";
@@ -103,7 +104,9 @@ class FloorElevationTable extends HTMLElement {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = true;
-      checkbox.addEventListener("change", () => this.recalculate());
+      checkbox.addEventListener("change", () => {
+        input.disabled = !input.disabled;
+      });
       typicalCell.appendChild(checkbox);
       row.appendChild(typicalCell);
 
@@ -233,6 +236,16 @@ class FloorElevationInput extends HTMLElement {
       this.shadowRoot.getElementById("num-floors").value,
       10
     );
+
+    const seaLevel = parseFloat(
+      this.shadowRoot.getElementById("sea-level").value
+    );
+
+    if (!seaLevel || seaLevel <= 0 || isNaN(seaLevel)) {
+      console.error("Invalid input for sea level");
+      return;
+    }
+
     const typicalHeight = parseFloat(
       this.shadowRoot.getElementById("typical-floor-height").value
     );

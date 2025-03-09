@@ -177,6 +177,7 @@ document.getElementById("next-button").addEventListener("click", async () => {
   }
 
   // Performing API Requests
+  console.log({ zones: zoneTable.zones() });
   const height = zoneTable.zones()[zoneTable.zones().length - 1][1];
   const dimensionResult = await dimensionsCall(width, height);
   console.log({ dimensionResult });
