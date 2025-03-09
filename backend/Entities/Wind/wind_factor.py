@@ -27,6 +27,14 @@ class WindFactor:
     This class is used to store the wind factor information
     """
 
+    # Topographic factor
+    ct: Optional[float]
+    # Exposure factor
+    ce: Optional[float]
+    cei: Optional[float]
+    # Gust factor
+    cg: Optional[float]
+
     def __init__(self):
         """
         Constructor for the WindFactor class
