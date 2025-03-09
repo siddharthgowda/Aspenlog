@@ -115,3 +115,32 @@ a:focus {
   background-color: #f7f4ef;
   outline: none;
 }
+
+input[type="number"] {
+  width: 100%;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border: 2px solid #d9d9d9;
+  border-radius: 12px;
+  background-color: #f7f4ef;
+  color: #707070;
+  font-size: 1rem;
+}
+
+input[type="number"]:hover {
+  border-color: #ccac81;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #9bca6d; /* Highlight border on focus */
+}
+
+/* Hidden and Visible Classes for Toggle Functionality */
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}

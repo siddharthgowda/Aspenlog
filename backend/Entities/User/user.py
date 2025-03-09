@@ -25,6 +25,7 @@ from backend.Entities.Building.roof import Roof
 from backend.Entities.Location.location import Location
 from backend.Entities.Snow.snow_load import SnowLoad
 from backend.Entities.User.profile import Profile
+from backend.Entities.Wind.wind_factor import WindFactor
 
 ########################################################################################################################
 # MAIN CLASS
@@ -50,6 +51,7 @@ class User:
     building: Optional[Building]
     importance_category: Optional[ImportanceFactor]
     snow_load: Optional[Dict["str", SnowLoad]]
+    # wind_factor: Optional[WindFactor]
 
     def __init__(self, username: str):
         """

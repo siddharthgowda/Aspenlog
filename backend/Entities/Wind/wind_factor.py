@@ -27,23 +27,14 @@ class WindFactor:
     This class is used to store the wind factor information
     """
 
-    # Topographic factor
-    ct: Optional[float]
-    # Exposure factor
-    ce: Optional[float]
-    cei: Optional[float]
-    # Gust factor
-    cg: Optional[float]
-
     def __init__(self):
         """
         Constructor for the WindFactor class
         """
-        # Set the attributes
-        self.ct = None
-        self.ce = None
-        self.cei = None
-        self.cg = None
+        self._ct = None    # Topographic factor
+        self._ce = None    # Exposure factor
+        self._cei = None   # Exposure factor (Intermediate custom value)
+        self._cg = None    # Gust factor
 
     def __str__(self):
         """
@@ -55,7 +46,18 @@ class WindFactor:
             f"ct: {self.ct}\n" f"ce: {self.ce}\n" f"cei: {self.cei}\n" f"cg: {self.cg}"
         )
 
+# TODO: all fo these Builder and BuilderInterface objects are reminants of a terrible implementation
+# for wall cladding analysis. In the future all builders and builder interfaces should be removed
+# and replaced with the original class (in this case that would be WindFactor).
 
+# NOTE (for future devs):
+# I believe the issue was made because the original enginner took SOLID 
+# (especailly open/closed and depedency inversion) and design patterns way too far. 
+# PLEASE DO NOT MAKE THIS MISTAKE!
+# It becames a headache for future devs
+
+# I will leave these Builder classes for legacy feature (i.e. wall cladding analysis) reasons now
+# BUT PLEASE IN THE FUTURE GET RID OF THIS
 class WindFactorBuilderInterface:
     """
     Builder interface for the WindFactor class

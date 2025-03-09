@@ -62,7 +62,7 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
           <custom-table class="table" id="climate-sesmic-table"></custom-table>
         </div>
         <button class="btn btn-primary" id="location_button">Get</button>
-        <div id="importance-category">
+        <div id="importance-category" class ="mb-3">
           <label for="importance-category">Importance Category</label>
           <select id="importance-category-select">
             <option value="">Select...</option>
@@ -72,6 +72,23 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
             <option value="POST_DISASTER">Post Disaster</option>
           </select>
         </div>
+        <div id="ce" class="mb-3">
+          <label for="ce">Ce</label>
+          <select id="ce-select">
+            <option value="">Select...</option>
+            <option value="OPEN">Open</option>
+            <option value="ROUGHT">Rought</option>
+            <option value="INTERMEDIATE">Intermediate</option>
+          </select>
+          <div class="mb-3 hidden" id="ce-intermediate-container">
+            <input id="ce-intermediate" type="number" />
+        </div>
+        </div>
+        <div id="ct" class="mb-3">
+          <label for="ct-input">Ct</label>
+          <p>Default is 1.0</p>
+          <input id="ct-input" type="number" name="ct" value="1.0" step="0.01" />
+        </div>        
       </div>
     </div>
     <div class="row gx-5 align-items-center py-4">
