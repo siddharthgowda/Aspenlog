@@ -6,7 +6,6 @@
 // By using this code, you agree to abide by the terms and conditions in those files.
 //
 // Author: Noah Subedar [https://github.com/noahsub]
-// Edit By: Siddharth Gowda [https://github.com/siddharthgowda]
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,6 +14,56 @@
 
 // The array to store the project IDs
 let PROJECT_ARRAY = [];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DROPDOWN MENU
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Set the username in the dropdown menu
+ */
+function setUsernameDropdown() {
+  window.api.invoke("get-connection-address").then((connectionAddress) => {
+    window.api
+      .invoke("get-token") // Retrieve the token
+      .then((token) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(`${connectionAddress}/get_user_profile`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            let data = JSON.parse(result);
+            username = data["username"];
+            document.getElementById("navbarDropdownMenuLink").textContent =
+              username;
+          })
+          .catch((error) => (window.location.href = "login.html"));
+      });
+  });
+}
+
+/**
+ * When the user clicks the profile button they are redirected to the profile page
+ */
+document.getElementById("profile").addEventListener("click", function () {
+  window.location.href = "profile.html";
+});
+
+/**
+ * When the user clicks the logout button they are logged out and redirected to the login page
+ */
+document.getElementById("logout").addEventListener("click", function () {
+  window.api.invoke("store-token", "");
+  window.location.href = "login.html";
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // BUTTON CLICK EVENTS
@@ -48,12 +97,12 @@ document
 
             fetch(
               `${connectionAddress}/download_user_save_file?id=${id}`,
-              requestOptions
+              requestOptions,
             )
               .then((response) => {
                 // Get filename from Content-Disposition header
                 const contentDisposition = response.headers.get(
-                  "Content-Disposition"
+                  "Content-Disposition",
                 );
                 let filename = "default_filename.extension";
                 if (contentDisposition) {
@@ -101,7 +150,7 @@ document
 
             fetch(
               `${connectionAddress}/delete_user_current_save_file?id=${id}`,
-              requestOptions
+              requestOptions,
             )
               .then((response) => response.text())
               .then((result) => {
@@ -134,11 +183,11 @@ document
 
             fetch(
               `${connectionAddress}/set_user_current_save_file?current_save_file=${id}`,
-              requestOptions
+              requestOptions,
             )
               .then((response) => {
                 if (response.status === 200) {
-                  window.location.href = "site_params.html";
+                  window.location.href = "input.html";
                 } else {
                   throw new Error("Set User Current Save File Error");
                 }
@@ -163,7 +212,8 @@ document.getElementById("new-button").addEventListener("click", function () {
         myHeaders.append("Authorization", `Bearer ${token}`);
 
         const raw = JSON.stringify({
-          json_data: '{"projectName":"New Project"}',
+          json_data:
+            '{"input_page":{"radio":{},"input":{"project-name":"New Project"},"table":{}}}',
           id: null,
         });
 
@@ -196,11 +246,11 @@ document.getElementById("new-button").addEventListener("click", function () {
 
             fetch(
               `${connectionAddress}/set_user_current_save_file?current_save_file=${id}`,
-              requestOptions
+              requestOptions,
             )
               .then((response) => {
                 if (response.status === 200) {
-                  window.location.href = "site_params.html";
+                  window.location.href = "input.html";
                 } else {
                   throw new Error("Set User Current Save File Error");
                 }
@@ -272,11 +322,11 @@ document.getElementById("json-input").addEventListener("change", function (e) {
 
               fetch(
                 `${connectionAddress}/set_user_current_save_file?current_save_file=${id}`,
-                requestOptions
+                requestOptions,
               )
                 .then((response) => {
                   if (response.status === 200) {
-                    window.location.href = "site_params.html";
+                    window.location.href = "input.html";
                   } else {
                     throw new Error("Set User Current Save File Error");
                   }
@@ -298,6 +348,8 @@ document.getElementById("json-input").addEventListener("change", function (e) {
  * When the window is loaded, the username dropdown is set and the save file list is populated
  */
 window.onload = function () {
+  setUsernameDropdown();
+
   PROJECT_ARRAY = [];
 
   window.api.invoke("get-connection-address").then((connectionAddress) => {
@@ -332,14 +384,12 @@ window.onload = function () {
                   date.toLocaleDateString() + " " + date.toLocaleTimeString();
                 PROJECT_ARRAY.push(item.ID);
 
-                console.log({ data });
-
                 // if there is a corrupted save file, skip it
                 try {
                   const html = `
                             <div class="list-group-item d-flex justify-content-between align-items-center" id="${index}">
                                 <div>
-                                    <h4 class="list-group-item-heading">${data["projectName"]}</h4>
+                                    <h4 class="list-group-item-heading">${data["input_page"]["input"]["project-name"]}</h4>
                                     <p class="list-group-item-text">${formattedDate}</p>
                                 </div>
                                 <div class="row">

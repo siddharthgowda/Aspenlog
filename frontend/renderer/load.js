@@ -427,7 +427,6 @@ function getWindLoads() {
         fetch(`${connectionAddress}/set_wind_load`, requestOptions)
           .then((response) => response.json())
           .then((result) => {
-            console.log({ result });
             const myHeaders = new Headers();
             myHeaders.append("Accept", "application/json");
             myHeaders.append("Authorization", `Bearer ${token}`);
@@ -442,7 +441,6 @@ function getWindLoads() {
               .then((response) => response.json())
               .then((result) => {
                 let heightZoneData = JSON.parse(result);
-                console.log(heightZoneData);
 
                 for (let zoneNum in heightZoneData) {
                   let innerZones =
@@ -1074,6 +1072,21 @@ document
     }
   });
 
+/**
+ * When the profile button is clicked, the user is redirected to the profile page
+ */
+document.getElementById("profile").addEventListener("click", function () {
+  window.location.href = "profile.html";
+});
+
+/**
+ * When the logout button is clicked, the user is logged out and redirected to the login page
+ */
+document.getElementById("logout").addEventListener("click", function () {
+  window.api.invoke("store-token", "");
+  window.location.href = "login.html";
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SERIALIZATION
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1133,37 +1146,39 @@ function serialize() {
  */
 function deserialize(json, section) {
   return new Promise((resolve) => {
-    // let objects = JSON.parse(json)[section];
-    // let totalElements =
-    //   Object.keys(objects.radio).length + Object.keys(objects.input).length;
-    // let processedElements = 0;
-    // // go through all the radio
-    // for (let id in objects.radio) {
-    //   waitForElement(id, function (radio) {
-    //     if (radio.value === objects.radio[id]) {
-    //       radio.click();
-    //     }
-    //     processedElements++;
-    //     if (processedElements === totalElements) {
-    //       resolve();
-    //     }
-    //   });
-    // }
-    // // go through all the input
-    // for (let id in objects.input) {
-    //   waitForElement(id, function (input) {
-    //     input.value = "";
-    //     input.focus();
-    //     let value = objects.input[id];
-    //     for (let i = 0; i < value.length; i++) {
-    //       input.value = value;
-    //     }
-    //     processedElements++;
-    //     if (processedElements === totalElements) {
-    //       resolve();
-    //     }
-    //   });
-    // }
+    let objects = JSON.parse(json)[section];
+    let totalElements =
+      Object.keys(objects.radio).length + Object.keys(objects.input).length;
+    let processedElements = 0;
+
+    // go through all the radio
+    for (let id in objects.radio) {
+      waitForElement(id, function (radio) {
+        if (radio.value === objects.radio[id]) {
+          radio.click();
+        }
+        processedElements++;
+        if (processedElements === totalElements) {
+          resolve();
+        }
+      });
+    }
+
+    // go through all the input
+    for (let id in objects.input) {
+      waitForElement(id, function (input) {
+        input.value = "";
+        input.focus();
+        let value = objects.input[id];
+        for (let i = 0; i < value.length; i++) {
+          input.value = value;
+        }
+        processedElements++;
+        if (processedElements === totalElements) {
+          resolve();
+        }
+      });
+    }
   });
 }
 
@@ -1262,6 +1277,41 @@ function loadSaveFile() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DROPDOWN MENU
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Set the username in the dropdown menu
+ */
+function setUsernameDropdown() {
+  window.api.invoke("get-connection-address").then((connectionAddress) => {
+    window.api
+      .invoke("get-token") // Retrieve the token
+      .then((token) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(`${connectionAddress}/get_user_profile`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            let data = JSON.parse(result);
+            username = data["username"];
+            document.getElementById("navbarDropdownMenuLink").textContent =
+              username;
+          })
+          .catch((error) => (window.location.href = "login.html"));
+      });
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WINDOW ONLOAD EVENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1270,7 +1320,7 @@ function loadSaveFile() {
  */
 window.onload = function () {
   loadSaveFile();
-  // setUsernameDropdown();
+  setUsernameDropdown();
 
   toggleMenuColors("#roof-type-selection");
 

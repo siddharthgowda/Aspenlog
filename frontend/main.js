@@ -3,11 +3,9 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const keytar = require("keytar");
 const fs = require("fs");
 const os = require("os");
-const { getBackendUrl, getDisableHttpCache } = require("./envConfig");
+const { getBackendUrl } = require("./envConfig");
 
-if (getDisableHttpCache()) {
-  app.commandLine.appendSwitch("disable-http-cache");
-}
+app.commandLine.appendSwitch("disable-http-cache");
 
 // Store the backend URL in keytar on app startup
 app.whenReady().then(async () => {

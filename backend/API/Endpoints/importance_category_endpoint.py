@@ -55,7 +55,6 @@ def importance_category_endpoint(
         importance_category = process_importance_category_data(
             importance_category_input.importance_category
         )
-        assert(importance_category is not None)
         # Store the importance category object in the user's memory slot
         set_user_importance_category(
             username=username, importance_category=importance_category

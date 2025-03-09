@@ -152,9 +152,6 @@ class Location:
             self.latitude = location_info.latitude
             self.longitude = location_info.longitude
 
-            # Test current longitude and latitude format and sigfig
-            # print("\nLat: ", self.latitude, "\nLong: ", self.longitude, "\n")
-
     def get_seismic_data_xv(self):
         """
         Fetches the seismic data from the NBCC 2020 Seismic Hazard Tool API using the XV site designation

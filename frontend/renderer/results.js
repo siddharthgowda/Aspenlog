@@ -46,9 +46,8 @@ function setWindLoadModelImage(connectionAddress, id, attempt = 10) {
   fetch(`${connectionAddress}/get_wind_load_model?id=${id}`)
     .then((response) => {
       if (response.status === 200) {
-        document.getElementById(
-          "wind-load-image"
-        ).src = `${connectionAddress}/get_wind_load_model?id=${id}`;
+        document.getElementById("wind-load-image").src =
+          `${connectionAddress}/get_wind_load_model?id=${id}`;
       } else {
         if (attempt > 0) {
           return setWindLoadModelImage(connectionAddress, id, attempt - 1);
@@ -70,9 +69,8 @@ function setSeismicLoadModelImage(connectionAddress, id, attempt = 10) {
   fetch(`${connectionAddress}/get_seismic_load_model?id=${id}`)
     .then((response) => {
       if (response.status === 200) {
-        document.getElementById(
-          "seismic-load-image"
-        ).src = `${connectionAddress}/get_seismic_load_model?id=${id}`;
+        document.getElementById("seismic-load-image").src =
+          `${connectionAddress}/get_seismic_load_model?id=${id}`;
       } else {
         if (attempt > 0) {
           return setWindLoadModelImage(connectionAddress, id, attempt - 1);
@@ -99,14 +97,12 @@ function setBarChartImage(
   i,
   img,
   position,
-  attempt = 10
+  attempt = 10,
 ) {
   fetch(`${connectionAddress}/get_bar_chart?id=${id}&zone_num=${i + 1}`)
     .then((response) => {
       if (response.status === 200) {
-        img.src = `${connectionAddress}/get_bar_chart?id=${id}&zone_num=${
-          i + 1
-        }`;
+        img.src = `${connectionAddress}/get_bar_chart?id=${id}&zone_num=${i + 1}`;
         img.style.maxWidth = "100%";
 
         if (position === "left") {
@@ -126,7 +122,7 @@ function setBarChartImage(
             i,
             img,
             position,
-            attempt - 1
+            attempt - 1,
           );
         } else {
           throw new Error("Bar Chart Image Not Found");
@@ -195,7 +191,7 @@ function loadSaveFile() {
 
             fetch(
               `${connectionAddress}/get_user_save_file?id=${id}`,
-              requestOptions
+              requestOptions,
             )
               .then((response) => {
                 if (response.status === 200) {
@@ -217,7 +213,7 @@ function loadSaveFile() {
 
                 fetch(
                   `${connectionAddress}/get_user_save_file?id=${id}`,
-                  requestOptions
+                  requestOptions,
                 )
                   .then((response) => {
                     if (response.status === 200) {
@@ -290,22 +286,23 @@ function serialize() {
  */
 function deserialize(json, section) {
   return new Promise((resolve) => {
-    // let objects = JSON.parse(json)[section];
-    // let totalElements =
-    //   Object.keys(objects.radio).length + Object.keys(objects.input).length;
-    // let processedElements = 0;
-    // // go through all the radio
-    // for (let id in objects.radio) {
-    //   waitForElement(id, function (radio) {
-    //     if (radio.value === objects.radio[id]) {
-    //       radio.click();
-    //     }
-    //     processedElements++;
-    //     if (processedElements === totalElements) {
-    //       resolve();
-    //     }
-    //   });
-    // }
+    let objects = JSON.parse(json)[section];
+    let totalElements =
+      Object.keys(objects.radio).length + Object.keys(objects.input).length;
+    let processedElements = 0;
+
+    // go through all the radio
+    for (let id in objects.radio) {
+      waitForElement(id, function (radio) {
+        if (radio.value === objects.radio[id]) {
+          radio.click();
+        }
+        processedElements++;
+        if (processedElements === totalElements) {
+          resolve();
+        }
+      });
+    }
   });
 }
 
@@ -332,7 +329,7 @@ function save() {
 
           return fetch(
             `${connectionAddress}/get_user_current_save_file`,
-            requestOptions
+            requestOptions,
           )
             .then((response) => {
               if (response.status === 200) {
@@ -362,7 +359,7 @@ function save() {
 
               return fetch(
                 `${connectionAddress}/set_user_save_data`,
-                requestOptions
+                requestOptions,
               )
                 .then((response) => response.text())
                 .catch((error) => console.error(error));
@@ -447,7 +444,7 @@ document
             .then((response) => {
               // Get filename from Content-Disposition header
               const contentDisposition = response.headers.get(
-                "Content-Disposition"
+                "Content-Disposition",
               );
               let filename = "default_filename.extension";
               if (contentDisposition) {
@@ -469,9 +466,8 @@ document
                 window.api.invoke("download", { data: uint8Array, filename });
               });
 
-              document.getElementById(
-                "export-warning"
-              ).innerText = `Downloaded ${filename}`;
+              document.getElementById("export-warning").innerText =
+                `Downloaded ${filename}`;
 
               setTimeout(function () {
                 document.getElementById("export-warning").innerText = "";
@@ -785,6 +781,56 @@ function getRoofLoadCombinations() {
       });
   });
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DROPDOWN MENU
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Set the username in the dropdown menu
+ */
+function setUsernameDropdown() {
+  window.api.invoke("get-connection-address").then((connectionAddress) => {
+    window.api
+      .invoke("get-token") // Retrieve the token
+      .then((token) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Accept", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        fetch(`${connectionAddress}/get_user_profile`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            let data = JSON.parse(result);
+            username = data["username"];
+            document.getElementById("navbarDropdownMenuLink").textContent =
+              username;
+          })
+          .catch((error) => (window.location.href = "login.html"));
+      });
+  });
+}
+
+/**
+ * When the profile button is clicked, the user is redirected to the profile page.
+ */
+document.getElementById("profile").addEventListener("click", function () {
+  window.location.href = "profile.html";
+});
+
+/**
+ * When the logout button is clicked, the user is logged out and redirected to the login page.
+ */
+document.getElementById("logout").addEventListener("click", function () {
+  window.api.invoke("store-token", "");
+  window.location.href = "login.html";
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // VISUALIZATION

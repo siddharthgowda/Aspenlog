@@ -53,11 +53,12 @@ def process_building_data(
     dimensions = get_user_dimensions(username)
     cladding = get_user_cladding(username)
     roof = get_user_roof(username)
-    
-    height_zones = None
     # If the zones are provided, create a height zone object for each height zone
     if zones is not None:
         height_zones = [HeightZone(zone_num=x[0], elevation=x[1]) for x in zones]
+    # If the zones are not provided, set the height zones to None
+    else:
+        height_zones = None
     # Get the material load for each height zone
     material_load = [x[1] for x in materials]
 
