@@ -21,6 +21,17 @@ const floorElevationTableStyle = `
       width: 100%;
       box-sizing: border-box;
     }
+  
+   .btn-primary {
+      color: #fff;
+      width: 20%;
+      margin: 0 auto;
+      border: transparent;
+      background-color: #9bca6d;
+      border-radius: 12px;
+      font-weight: bold;
+      padding: 0.375rem 0.75rem;
+    }
   </style>
 `;
 
@@ -30,6 +41,7 @@ ${floorElevationTableStyle}
     <thead></thead>
     <tbody></tbody>
   </table>
+  <button class="btn btn-primary" id="recalculate">Recalculate</button>
 `;
 
 class FloorElevationTable extends HTMLElement {
@@ -39,36 +51,34 @@ class FloorElevationTable extends HTMLElement {
     this.shadowRoot.innerHTML = floorElevationTableHTML;
     this.numberOfFloors = 0;
     this.elevationData = [];
+    this.typicalHeight = 0;
+    this.shadowRoot
+      .getElementById("recalculate")
+      .addEventListener("click", () => this.recalculate());
   }
 
-  render(floors) {
+  render(floors, height) {
     if (!Number.isInteger(floors) || floors <= 0) {
-      console.error(
-        "Invalid number of floors. Please provide a positive integer."
-      );
+      console.error("Invalid number of floors. Provide a positive integer.");
       return;
     }
 
     this.numberOfFloors = floors;
     this.elevationData = Array(floors).fill(null);
+    this.typicalHeight = parseFloat(height) || 0;
 
     const tableHead = this.shadowRoot.querySelector("thead");
     const tableBody = this.shadowRoot.querySelector("tbody");
-
     tableHead.innerHTML = "";
     tableBody.innerHTML = "";
 
     const headerRow = document.createElement("tr");
-    ["Floor Number", "Elevation (m)"].forEach((header) => {
+    ["Floor Number", "Elevation (m)", "Typical"].forEach((header) => {
       const th = document.createElement("th");
       th.textContent = header;
       headerRow.appendChild(th);
     });
     tableHead.appendChild(headerRow);
-
-    // PLEASE SEE!
-    // Content is displayed to user in reverse (from floor n to floor 1)
-    // put stored in component in order of floor 1 to floor n
 
     for (let i = floors - 1; i >= 0; i--) {
       const row = document.createElement("tr");
@@ -89,11 +99,35 @@ class FloorElevationTable extends HTMLElement {
       elevationCell.appendChild(input);
       row.appendChild(elevationCell);
 
+      const typicalCell = document.createElement("td");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = true;
+      checkbox.addEventListener("change", () => this.recalculate());
+      typicalCell.appendChild(checkbox);
+      row.appendChild(typicalCell);
+
       tableBody.appendChild(row);
     }
   }
 
+  recalculate() {
+    let prevElevation = 0;
+    const rows = this.shadowRoot.querySelectorAll("tbody tr");
+    [...rows].reverse().forEach((row, index) => {
+      const input = row.children[1].querySelector("input");
+      const checkbox = row.children[2].querySelector("input");
+      if (checkbox.checked) {
+        input.value =
+          index === 0 ? this.typicalHeight : prevElevation + this.typicalHeight;
+        this.elevationData[index] = parseFloat(input.value);
+      }
+      prevElevation = this.elevationData[index];
+    });
+  }
+
   data() {
+    console.log({ ed: this.elevationData });
     return this.elevationData.map((elevation, index) => ({
       floor: index + 1,
       elevation,
@@ -138,24 +172,24 @@ const floorElevationInputStyle = `
     }
 
     .btn-primary {
-    color: #fff;
-    width: 20%;
-    margin: 0 auto;
-    border: transparent;
-    background-color: #9bca6d;
-    border-radius: 12px;
-    font-weight: bold;
-    padding: 0.375rem 0.75rem;
+      color: #fff;
+      width: 20%;
+      margin: 0 auto;
+      border: transparent;
+      background-color: #9bca6d;
+      border-radius: 12px;
+      font-weight: bold;
+      padding: 0.375rem 0.75rem;
     }
 
     .btn-primary:hover {
-    background-color: #85b05a;
+      background-color: #85b05a;
     }
     label {
-        font-weight: bold;
-        color: #707070;
-        display: block;
-        margin-bottom: 5px;
+      font-weight: bold;
+      color: #707070;
+      display: block;
+      margin-bottom: 5px;
     }
   </style>
 `;
@@ -164,13 +198,16 @@ const floorElevationInputHTML = `
 ${floorElevationInputStyle}
   <div class="mb-3">
     <label for="num-floors">Number of Floors</label>
-    <p>This will be used in seismic calculation.</p>
     <input class="form-control" id="num-floors" type="number" name="num_floors" />
   </div>
   <div class="mb-3">
     <label for="sea-level">Height of Sea/Ground Level</label>
     <p>This will be used when calculating floor dimensions.</p>
     <input class="form-control" id="sea-level" type="number" name="sea_level" />
+  </div>
+  <div class="mb-3">
+    <label for="typical-floor-height">Typical Floor Height</label>
+    <input class="form-control" id="typical-floor-height" type="number" step="0.01" placeholder="Enter height" />
   </div>
   <div class="mb-3 hidden" id="floor-elevation-table-container">
     <floor-elevation-table id="floor-elevation-table"></floor-elevation-table>
@@ -192,26 +229,25 @@ class FloorElevationInput extends HTMLElement {
   }
 
   handleButtonClick() {
-    const numFloorsInput = this.shadowRoot.getElementById("num-floors");
-    const seaLevelInput = this.shadowRoot.getElementById("sea-level");
-    const numFloorsValue = parseInt(numFloorsInput.value, 10);
-    const seaLevelValue = parseFloat(seaLevelInput.value);
+    const numFloorsValue = parseInt(
+      this.shadowRoot.getElementById("num-floors").value,
+      10
+    );
+    const typicalHeight = parseFloat(
+      this.shadowRoot.getElementById("typical-floor-height").value
+    );
 
-    if (!numFloorsValue || numFloorsValue <= 0 || isNaN(seaLevelValue)) {
-      console.error("Invalid input for number of floors or sea level.");
+    if (!numFloorsValue || numFloorsValue <= 0 || isNaN(typicalHeight)) {
+      console.error(
+        "Invalid input for number of floors or typical floor height."
+      );
       return;
     }
 
-    const tableContainer = this.shadowRoot.getElementById(
-      "floor-elevation-table-container"
-    );
     const tableComponent = this.shadowRoot.getElementById(
       "floor-elevation-table"
     );
-
-    tableContainer.classList.remove("hidden");
-    tableContainer.classList.add("visible");
-    tableComponent.render(numFloorsValue);
+    tableComponent.render(numFloorsValue, typicalHeight);
   }
 
   data() {
