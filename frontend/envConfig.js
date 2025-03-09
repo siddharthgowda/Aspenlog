@@ -5,4 +5,8 @@ const getBackendUrl = () => {
   return isLocal ? "http://localhost:42614" : "https://aspenlog.cc:42613";
 };
 
-module.exports = { getBackendUrl };
+const getDisableHttpCache = () => {
+  return process.env.DISABLE_HTTP_CACHE === "true";
+};
+
+module.exports = { getBackendUrl, getDisableHttpCache };
