@@ -201,7 +201,7 @@ document.getElementById("next-button").addEventListener("click", async () => {
 
   console.log({ buildingResult });
 
-  window.location.href = "load.html";
+  window.location.href = "engineer_selection.html";
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

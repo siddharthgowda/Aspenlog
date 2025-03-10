@@ -35,17 +35,26 @@ let MAP;
 // ON PAGE LOAD (First Function Ran)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-window.onload = function () {
+window.onload = async function () {
   const resultsTable = document.getElementById("climate-sesmic-table");
   // rendering empty Climate and Sesmic Table, ONLY Headers
   resultsTable.render(CLIMATE_SESMIC_TABLE_HEADER, [[]]);
   // Setting Map Pin to Myhal University of Toronto
   setMap(43.66074, -79.39661, "Myhal Centre, Toronto, Ontario, Canada");
+
+  // setting user save data
+
+  const saveData = await getUserSaveFile();
+  const { projectName } = saveData;
+
+  console.log({ saveData });
+
+  const projectNameInput = document.getElementById("project-name");
+  projectNameInput.value = projectName;
+
+  window.scrollTo(0, 0);
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MAP // TODO: Make Map it's own component
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * Update the map with the given latitude, longitude, and address
  * @param latitude
@@ -69,6 +78,59 @@ function setMap(latitude, longitude, address) {
 
   // Add a marker with a popup
   L.marker([latitude, longitude]).addTo(MAP).bindPopup(address);
+}
+
+async function getUserSaveFile() {
+  try {
+    const serverAddress = await window.api.invoke("get-connection-address");
+    const authenticationToken = await window.api.invoke("get-token");
+
+    const requestHeaders = {
+      Accept: "application/json",
+      Authorization: `Bearer ${authenticationToken}`,
+    };
+
+    const getCurrentSaveResponse = await fetch(
+      `${serverAddress}/get_user_current_save_file`,
+      {
+        method: "POST",
+        headers: new Headers(requestHeaders),
+        redirect: "follow",
+      }
+    );
+
+    if (!getCurrentSaveResponse.ok) {
+      throw new Error("Failed to Get User Current Save File");
+    }
+
+    const saveFileId = parseInt(await getCurrentSaveResponse.json());
+
+    const getSaveFileResponse = await fetch(
+      `${serverAddress}/get_user_save_file?id=${saveFileId}`,
+      {
+        method: "POST",
+        headers: new Headers(requestHeaders),
+        redirect: "follow",
+      }
+    );
+
+    if (!getSaveFileResponse.ok) {
+      throw new Error("Failed to Get User Save File");
+    }
+
+    const saveFileData = await getSaveFileResponse.json();
+
+    // Assuming saveFileData.JsonData is a JSON string
+    const parsedJsonData = JSON.parse(saveFileData.JsonData);
+
+    // Use parsedJsonData as needed
+    console.log(parsedJsonData);
+
+    return parsedJsonData;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,6 +325,10 @@ async function save() {
     let projectName = document.getElementById("project-name").value.trim();
     projectName = projectName || "New Project";
 
+    // creating save Data object
+
+    const saveData = { projectName };
+
     const headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Authorization", `Bearer ${token}`);
@@ -290,7 +356,7 @@ async function save() {
     headers.append("Content-Type", "application/json");
 
     const body = JSON.stringify({
-      json_data: JSON.stringify({ projectName }),
+      json_data: JSON.stringify(saveData),
       id: saveFileId,
     });
 
