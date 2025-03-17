@@ -39,7 +39,7 @@ document.getElementById("next-button").addEventListener("click", () => {
     window.location.href = "home.html"; // unimplmented
   } else if (engineerDropdown.value == WALL_CLADDING_ENGINEER) {
     window.location.href = "load.html";
+  } else {
+    alertBox.alert("Please choose an engineering type");
   }
-
-  alertBox.alert("Please choose an engineering type");
 });
