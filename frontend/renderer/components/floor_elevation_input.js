@@ -241,7 +241,7 @@ class FloorElevationInput extends HTMLElement {
       this.shadowRoot.getElementById("sea-level").value
     );
 
-    if (!seaLevel || seaLevel <= 0 || isNaN(seaLevel)) {
+    if (seaLevel < 0 || isNaN(seaLevel)) {
       console.error("Invalid input for sea level");
       return;
     }

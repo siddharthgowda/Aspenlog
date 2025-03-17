@@ -1,0 +1,55 @@
+<!--
+input.html
+This file is the html where the user selects there engineering type.
+
+Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
+By using this code, you agree to abide by the terms and conditions in those files.
+
+Author: Siddharth Gowda [https://github.com/siddharthgowda]
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>ASPENLOG 2020</title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
+    <link href="building_geometry.css" rel="stylesheet" />
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <script crossorigin="anonymous" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="./components/navbar.js"></script>
+    <custom-navbar></custom-navbar>
+    <div style="padding: 40px">
+        <h3>Select Engineery</h3>
+        <div id="engineer-type-container" class="mb-3">
+            <label for="engineer">Choose Engineer</label>
+            <select id="engineer-dropdown">
+              <option value="">Select...</option>
+              <option value="MAIN">Main Structure</option>
+              <option value="WALL_CLADDING">Wall Cladding</option>
+            </select>
+          </div>
+        
+            <script src="./components/alert_box.js"></script>
+            <alert-box id="alert-box"></alert-box>
+            <div class="col-md-6 center-align" id="button-container">
+                <script src="./components/page_button.js"></script>
+                <page-button id="back-button" page="building_geometry">Back</page-button>
+                <page-button id="home-button" page="home">Home</page-button>
+                <button class="btn btn-primary" id="save-button">Save</button>
+                <button class="btn btn-primary" id="next-button">Next</button>
+            </div>
+        </div>
+</body>
+
+</html>
+<script src="engineer_selection.js"></script>
