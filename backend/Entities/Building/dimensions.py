@@ -33,7 +33,17 @@ class Dimensions:
     # height of the ridge
     height_ridge: Optional[float]
     # width of the building
+    # NOTE: this is only used for wall cladding an is a left for legacy reasons
     width: Optional[float]
+
+    # width across of the building
+    width_across: Optional[float]
+
+    # width along of the building
+    width_along: Optional[float]
+
+    # sea_level/height of ground floor (the zero)
+    sea_level: Optional[float]
 
     def __init__(self):
         # Initialize everything to None so that the associated builder class can handle assignments
@@ -41,7 +51,9 @@ class Dimensions:
         self.height_eave = None
         self.height_ridge = None
         self.width = None
-
+        self.width_across = None
+        self.width_along = None
+        self.sea_level = None
     def __str__(self):
         """
         String representation of the Dimensions class
@@ -53,6 +65,9 @@ class Dimensions:
             f"height_eave: {self.height_eave}\n"
             f"height_ridge: {self.height_ridge}\n"
             f"width: {self.width}"
+            f"width_along: {self.width_along}"
+            f"width_across: {self.width_across}"
+            f"sea_level: {self.sea_level}"
         )
 
 
@@ -81,6 +96,15 @@ class DimensionsBuilderInterface:
     def set_width(self, width: float):
         pass
 
+    def set_width_along(self, width: float):
+        pass
+
+    def set_width_across(self, width: float):
+        pass
+    
+    def set_sea_level(self, sea_level: float):
+        pass
+
     def get_height(self):
         pass
 
@@ -91,6 +115,15 @@ class DimensionsBuilderInterface:
         pass
 
     def get_width(self):
+        pass
+
+    def get_width_along(self):
+        pass
+
+    def get_width_across(self):
+        pass
+
+    def get_sea_level(self):
         pass
 
 
@@ -126,6 +159,31 @@ class BasicDimensionsBuilder(DimensionsBuilderInterface):
         :return: None
         """
         self.dimensions.width = width
+    
+
+    def set_width_along(self, width: float):
+        """
+        Sets the width along attribute of the Dimensions class
+        :param width: The width along of the building
+        :return: None
+        """
+        self.dimensions.width_along = width
+
+    def set_width_across(self, width: float):
+        """
+        Sets the width accross attribute of the Dimensions class
+        :param width: The width accross of the building
+        :return: None
+        """
+        self.dimensions.width_across = width
+
+    def set_sea_level(self, sea_level: float):
+        """
+        Sets the sea level/ground floor attribute of the Dimensions class
+        :param sea_level: The sea level/ground floor of the building
+        :return: None
+        """
+        self.dimensions.sea_level = sea_level
 
     def get_height(self):
         """
@@ -140,6 +198,24 @@ class BasicDimensionsBuilder(DimensionsBuilderInterface):
         :return: The width of the building
         """
         return self.dimensions.width
+    
+    def get_width_along(self, width: float):
+        """
+        :return width: The width along of the building
+        """
+        return self.dimensions.width_along
+
+    def get_width_across(self):
+        """
+        :return width: The width across of the building
+        """
+        return self.dimensions.width_across
+    
+    def get_sea_level(self):
+        """
+        :return sea_level: The sea level/ground floor of the building
+        """
+        return self.dimensions.sea_level
 
     def get_dimensions(self):
         """

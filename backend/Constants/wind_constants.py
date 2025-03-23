@@ -6,6 +6,7 @@
 # By using this code, you agree to abide by the terms and conditions in those files.
 #
 # Author: Noah Subedar [https://github.com/noahsub]
+# Edite by: Siddharth Gowda [https://github.com/siddharthgowda]
 ########################################################################################################################
 
 ########################################################################################################################
@@ -45,3 +46,12 @@ class InternalPressureSelections(Enum):
     ENCLOSED: str = "enclosed"
     PARTIALLY_ENCLOSED: str = "partially_enclosed"
     LARGE_OPENINGS: str = "large_openings"
+
+class WindFaceConstants(Enum):
+    """
+    Enum for width of building compared to direction of wind
+    """
+
+    WINDWARD_FACE: str = "Windward Face"
+    LEWARD_FACE: str = "Leeward Face"
+    WALLS_PARALLEL_TO_WIND: str = "Walls Parallel to Wind Direction"

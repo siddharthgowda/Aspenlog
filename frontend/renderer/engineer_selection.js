@@ -36,7 +36,7 @@ document.getElementById("next-button").addEventListener("click", () => {
   const engineerDropdown = document.getElementById("engineer-dropdown");
 
   if (engineerDropdown.value == MAIN_ENGINEER) {
-    window.location.href = "home.html"; // unimplmented
+    window.location.href = "main_structure_wind.html";
   } else if (engineerDropdown.value == WALL_CLADDING_ENGINEER) {
     window.location.href = "load.html";
   } else {

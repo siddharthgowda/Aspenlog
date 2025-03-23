@@ -52,8 +52,8 @@ document
     const floorsElevationData = floorElevationInput
       .data()
       .tableData.map(({ floor, elevation }) => {
-        const seaLevel = floorElevationInput.data().seaLevel;
-        return [floor, elevation - seaLevel];
+        // const seaLevel = floorElevationInput.data().seaLevel;
+        return [floor, elevation];
       });
 
     heightZoneTableContainer.classList.remove("hidden");
@@ -88,9 +88,15 @@ document.getElementById("next-button").addEventListener("click", async () => {
   const alertbox = document.getElementById("alert-box");
   const floorElevationInput = document.getElementById("floor-elevation-input");
 
-  const width = parseFloat(document.getElementById("width").value);
-  if (!width || width <= 0) {
-    alertbox.alert("Please Enter A Valid Width value");
+  const widthAcross = parseFloat(document.getElementById("width-across").value);
+  if (!widthAcross || widthAcross <= 0) {
+    alertbox.alert("Please Enter A Valid width across value");
+    return;
+  }
+
+  const widthAlong = parseFloat(document.getElementById("width-along").value);
+  if (!widthAlong || widthAlong <= 0) {
+    alertbox.alert("Please Enter A Valid width along value");
     return;
   }
 
@@ -104,6 +110,8 @@ document.getElementById("next-button").addEventListener("click", async () => {
     alertbox.alert("Please Enter A Valid floor number value");
     return;
   }
+
+  const seaLevel = floorElevationInput.data().seaLevel;
 
   // cladding
   const topCladding = parseInt(document.getElementById("top-height").value);
@@ -179,7 +187,12 @@ document.getElementById("next-button").addEventListener("click", async () => {
   // Performing API Requests
   console.log({ zones: zoneTable.zones() });
   const height = zoneTable.zones()[zoneTable.zones().length - 1][1];
-  const dimensionResult = await dimensionsCall(width, height);
+  const dimensionResult = await dimensionsCall(
+    widthAcross,
+    widthAlong,
+    height,
+    seaLevel
+  );
   console.log({ dimensionResult });
   const claddingResult = await claddingCall(topCladding, bottomCladding);
   console.log({ claddingResult });
@@ -210,8 +223,10 @@ document.getElementById("next-button").addEventListener("click", async () => {
 // TODO: eaveHeight and ridgeHeight should not exists in general since it does not pertain to high rises
 // this should be changed in the backend in the future
 async function dimensionsCall(
-  width,
+  widthAcross,
+  widthAlong,
   height,
+  seaLevel,
   eaveHeight = null,
   ridgeHeight = null
 ) {
@@ -225,12 +240,15 @@ async function dimensionsCall(
     headers.append("Authorization", `Bearer ${token}`);
 
     const body = JSON.stringify({
-      width,
+      width_across: widthAcross,
+      width_along: widthAlong,
       height,
+      sea_level: seaLevel,
       eave_height: eaveHeight,
       ridge_height: ridgeHeight,
     });
 
+    console.log({ body });
     const requestOptions = {
       method: "POST",
       headers,
@@ -246,6 +264,7 @@ async function dimensionsCall(
     const result = await response.json();
     return result;
   } catch (error) {
+    console.log({ error });
     console.error("Error sending dimensions data:", error);
   }
 }

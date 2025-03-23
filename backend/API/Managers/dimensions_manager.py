@@ -25,9 +25,12 @@ from backend.Entities.Building.dimensions import (
 
 def process_dimension_data(
     width: float,
+    width_across: float = None,
+    width_along: float = None,
     height: float = None,
     eave_height: float = None,
     ridge_height: float = None,
+    sea_level: float =  None
 ):
     """
     Processes the dimension data and creates a dimensions object
@@ -42,8 +45,13 @@ def process_dimension_data(
         dimensions_builder = BasicDimensionsBuilder()
         dimensions_builder.set_height(height)
         dimensions_builder.set_width(width)
+        dimensions_builder.set_width_across(width_across)
+        dimensions_builder.set_width_along(width_along)
+        dimensions_builder.set_sea_level(sea_level)
     # If the eave height and ridge height are provided, use the eave ridge dimensions builder
     else:
+        # DEPRICATED
+        # this is not relevant to the app since we are only concerned about high rise buildings, NOT residential buildings
         dimensions_builder = EaveRidgeDimensionsBuilder()
         dimensions_builder.set_width(width)
         dimensions_builder.set_height_eave(eave_height)

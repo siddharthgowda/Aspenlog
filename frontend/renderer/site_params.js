@@ -212,11 +212,27 @@ document.getElementById("save-button").addEventListener("click", async () => {
 document.getElementById("next-button").addEventListener("click", async () => {
   const projectNameInput = document.getElementById("project-name");
   const projectNameValue = projectNameInput.value;
+
+  const natrualFrequencyInput = document.getElementById(
+    "fundamental-natural-value"
+  );
+  const natrualFrequencyValue = parseFloat(natrualFrequencyInput.value);
+
   const importanceCategorySelect = document.getElementById(
     "importance-category-select"
   );
   const importanceCategory = importanceCategorySelect.value;
-  console.log({ importanceCategory, projectNameValue, isLocationDataSet });
+
+  const materialTypeSelect = document.getElementById("material-type-select");
+  const materialType = materialTypeSelect.value;
+
+  console.log({
+    natrualFrequencyValue,
+    importanceCategory,
+    projectNameValue,
+    isLocationDataSet,
+    materialType,
+  });
 
   if (!projectNameValue) {
     const alertBox = document.getElementById("alert-box");
@@ -235,10 +251,24 @@ document.getElementById("next-button").addEventListener("click", async () => {
     return;
   }
 
+  if (!materialType) {
+    const alertBox = document.getElementById("alert-box");
+    alertBox.alert("Please Choose An materialType");
+    return;
+  }
+
+  if (!natrualFrequencyValue) {
+    const alertBox = document.getElementById("alert-box");
+    alertBox.alert("Please enter a valid natural frequency");
+    return;
+  }
+
   const alertBox = document.getElementById("alert-box");
   alertBox.alert("Proccessing and Saving data", NOTIFICATION);
   // Sending importance category to backend
+  await naturalFrequencyCall(natrualFrequencyValue);
   await importanceCategoryCall(importanceCategory);
+  await materialTypeCall(materialType);
   await save();
   alertBox.hide();
   window.location.href = "building_geometry.html";
@@ -283,6 +313,45 @@ async function locationCall(address, siteDesignation, seismicValue) {
   }
 }
 
+async function naturalFrequencyCall(naturalFrequency) {
+  try {
+    const connectionAddress = await window.api.invoke("get-connection-address");
+    const token = await window.api.invoke("get-token");
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+
+    const body = JSON.stringify({
+      frequency: naturalFrequency, // Matches Pydantic model field name
+    });
+
+    const request = {
+      method: "POST",
+      headers,
+      body,
+      redirect: "follow",
+    };
+
+    console.log({ request });
+    const response = await fetch(
+      `${connectionAddress}/natural_frequency`,
+      request
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("natural frequency set successfully:", data);
+      return data;
+    }
+  } catch (error) {
+    console.log({ error });
+    console.error({ error });
+    return null;
+  }
+}
+
 async function importanceCategoryCall(importanceCategory) {
   try {
     const connectionAddress = await window.api.invoke("get-connection-address");
@@ -313,6 +382,41 @@ async function importanceCategoryCall(importanceCategory) {
   } catch (error) {
     console.error({ error });
     return;
+  }
+}
+
+async function materialTypeCall(materialType) {
+  try {
+    const connectionAddress = await window.api.invoke("get-connection-address");
+    const token = await window.api.invoke("get-token");
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+
+    const body = JSON.stringify({
+      material_type: materialType, // Matches Pydantic model field name
+    });
+
+    const request = {
+      method: "POST",
+      headers,
+      body,
+      redirect: "follow",
+    };
+
+    console.log({ request });
+    const response = await fetch(`${connectionAddress}/material_type`, request);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Material type set successfully:", data);
+      return data;
+    }
+  } catch (error) {
+    console.error({ error });
+    return null;
   }
 }
 

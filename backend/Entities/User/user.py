@@ -18,6 +18,7 @@ from typing import Dict, List, Optional
 from openpyxl.worksheet.dimensions import Dimension
 
 from backend.Constants.importance_factor_constants import ImportanceFactor
+from backend.Constants.materials import Materials
 from backend.Entities.Building.building import Building
 from backend.Entities.Building.cladding import Cladding
 from backend.Entities.Building.height_zone import HeightZone
@@ -47,9 +48,11 @@ class User:
     num_floors: Optional[int]
     mid_height: Optional[float]
     material_load: Optional[Dict[int, float]]
+    natural_frequency: Optional[float]
     height_zones: Optional[List[HeightZone]]
     building: Optional[Building]
     importance_category: Optional[ImportanceFactor]
+    material_type: Optional[Materials]
     snow_load: Optional[Dict["str", SnowLoad]]
     # wind_factor: Optional[WindFactor]
 
@@ -72,6 +75,7 @@ class User:
         self.building = None
         self.importance_category = None
         self.snow_load = None
+        self.material_type = None
 
     def set_profile(self, profile: Profile):
         """
@@ -145,6 +149,14 @@ class User:
         """
         self.material_load = material_load
 
+    def set_natural_frequency(self, natural_frequency: float):
+        """
+        Sets the natural_frequency of the building
+        :param natural_frequency: The natural_frequency of the building
+        :return: None
+        """
+        self.natural_frequency = natural_frequency
+
     def set_height_zones(self, height_zones: List[HeightZone]):
         """
         Sets the height zones of the building
@@ -168,6 +180,17 @@ class User:
         :return: None
         """
         self.importance_category = importance_category
+
+    def set_material_type(self, material_type: Materials):
+        """
+        Sets the material_type of the building
+        :param material_type: The material type of the building
+        :return: None
+        """
+        print("\n", material_type, "\n")
+        print("\n", self.material_type, "\n")
+        self.material_type = material_type
+        print("\n", self.material_type, "\n")
 
     def set_snow_load(self, snow_load):
         """
@@ -246,6 +269,14 @@ class User:
         :return: The material load of the building
         """
         return self.material_load
+    
+    def get_natural_frequency(self):
+        """
+        Return the natural_frequency of the building
+        :param natural_frequency: The natural_frequency of the building
+        :return: None
+        """
+        return self.natural_frequency
 
     def get_height_zones(self):
         """
@@ -267,6 +298,12 @@ class User:
         :return: The importance category of the building
         """
         return self.importance_category
+    
+    def get_material_type(self):
+        """
+        :return: The material type of the building
+        """
+        return self.material_type
 
     def get_snow_load(self):
         """

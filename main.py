@@ -109,9 +109,13 @@ if __name__ == "__main__":
     from backend.API.Endpoints.building_endpoint import building_router
     from backend.API.Endpoints.cladding_endpoint import cladding_router
     from backend.API.Endpoints.dimensions_endpoint import dimensions_router
+    from backend.API.Endpoints.natural_frequency_endpoint import natural_frequency_endpoint_router
     from backend.API.Endpoints.height_zones_endpoint import height_zone_router
     from backend.API.Endpoints.importance_category_endpoint import (
         importance_category_router,
+    )
+    from backend.API.Endpoints.material_type_endpoint import (
+        material_type_endpoint_router,
     )
     from backend.API.Endpoints.location import location_router
     from backend.API.Endpoints.roof_endpoint import roof_router
@@ -126,6 +130,7 @@ if __name__ == "__main__":
         wall_load_combination_router,
     )
     from backend.API.Endpoints.wind_load_endpoint import wind_load_router
+    from backend.API.Endpoints.calculate_main_structure_wind_factor import calculate_main_structure_wind_factor_router
     from backend.API.Endpoints.visualization_endpoint import visualization_router
     from backend.API.Endpoints.output_endpoint import output_router
 
@@ -133,12 +138,15 @@ if __name__ == "__main__":
     app.include_router(authentication_router)
     app.include_router(location_router)
     app.include_router(dimensions_router)
+    app.include_router(natural_frequency_endpoint_router)
     app.include_router(cladding_router)
     app.include_router(roof_router)
     app.include_router(building_router)
     app.include_router(importance_category_router)
+    app.include_router(material_type_endpoint_router)
     app.include_router(user_data_router)
     app.include_router(wind_load_router)
+    app.include_router(calculate_main_structure_wind_factor_router)
     app.include_router(height_zone_router)
     app.include_router(seismic_load_router)
     app.include_router(snow_load_router)
