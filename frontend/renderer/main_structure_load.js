@@ -208,7 +208,7 @@ document.getElementById("next-button").addEventListener("click", async () => {
     alertbox.alert("Please Click Calcualate");
     return;
   }
-  // window.location.href = "../home.html";
+  window.location.href = "main_structure_results.html";
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
