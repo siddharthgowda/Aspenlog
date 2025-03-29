@@ -130,113 +130,116 @@ function getWindLoadInputs(zone_num) {
 
 /**
  * Create the wind load component
- * @param zone_num
- * @returns {string}
+ * @param {number} zone_num - The zone number for the height zone.
+ * @returns {string} - The HTML string for the wind load component.
  */
 function createWindLoadComponent(zone_num) {
+  // Add a conditional class to hide the div if zone_num > 1
+  const hiddenClass = zone_num > 1 ? "d-none" : "";
+
   return `
-    <hr>
-    <h5 id="wind-load-component-hz-${zone_num}">Height Zone ${zone_num}</h5>
-    <hr>
-    <div class="row gx-5 ">
-        <div class="col-md-6">
-        <div class="mb-3">
-            <label for="topographic-factor-hz-${zone_num}">Topographic Factor (Ct)</label>
-            <p>By default the topographic factor is 1</p>
-            <input type="number" id="topographic-factor-hz-${zone_num}" class="form-control" value="1"/>
-        </div>
-        <div class="mb-3">
-            <label for="exposure-factor-selection-hz-${zone_num}">Exposure Factor (Ce)</label>
-            <br>
-            <div class="btn-group btn-group-toggle" id="exposure-factor-selection-hz-${zone_num}" data-toggle="buttons">
-                <label class="btn btn-secondary" id="exposure-factor-open-option-button-hz-${zone_num}">
-                    <input type="radio" name="exposure-factor-selection-hz-${zone_num}" id="exposure-factor-open-option-hz-${zone_num}" autocomplete="off"> Open
-                </label>
-                <label class="btn btn-secondary" id="exposure-factor-rough-option-button-hz-${zone_num}">
-                    <input type="radio" name="exposure-factor-selection-hz-${zone_num}" id="exposure-factor-rough-option-hz-${zone_num}" autocomplete="off"> Rough
-                </label>
-                <label class="btn btn-secondary" id="exposure-factor-intermediate-option-button-hz-${zone_num}">
-                    <input type="radio" name="exposure-factor-selection-hz-${zone_num}" id="exposure-factor-intermediate-option-hz-${zone_num}" autocomplete="off"> Intermediate
-                </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <input type="number" id="ce-intermediate-hz-${zone_num}" class="form-control"/>
-        </div>
-        <div class="mb-3">
-            <label>Gust Factor (Cg)</label>
-            <p>2.5</p>
-        </div>
-        <div class="mb-3">
-            <label for="internal-pressure-category-selection-hz-${zone_num}">Internal Pressure Category</label>
-            <br>
-            <div class="btn-group btn-group-toggle" id="internal-pressure-category-selection-hz-${zone_num}" data-toggle="buttons">
-                <label class="btn btn-secondary" id="internal-pressure-category-enclosed-option-button-hz-${zone_num}">
-                    <input type="radio" name="internal-pressure-category-selection-hz-${zone_num}" id="internal-pressure-category-enclosed-option-hz-${zone_num}" autocomplete="off"> Enclosed
-                </label>
-                <label class="btn btn-secondary" id="internal-pressure-category-partially-enclosed-option-button-hz-${zone_num}">
-                    <input type="radio" name="internal-pressure-category-selection-hz-${zone_num}" id="internal-pressure-category-partially-enclosed-option-hz-${zone_num}" autocomplete="off"> Partially Enclosed
-                </label>
-                <label class="btn btn-secondary" id="internal-pressure-category-large-openings-option-button-hz-${zone_num}">
-                    <input type="radio" name="internal-pressure-category-selection-hz-${zone_num}" id="internal-pressure-category-large-openings-option-hz-${zone_num}" autocomplete="off"> Large Openings
-                </label>
-            </div>
-        </div>
-        </div>
-        <div class="col-md-6">
-            <label for="wind-load-table-hz-${zone_num}">Calculated Wind Load for Different Zones</label>
-            <table id="wind-load-table-hz-${zone_num}" class="table">
-                <colgroup>
-                    <col span="2">
-                    <col span="2">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th rowspan="2">Zone</th>
-                        <th rowspan="2">Zone Name</th>
-                        <th colspan="2" style="text-align:center;">Wind Load (kPa)</th>
-                    </tr>
-                    <tr>
-                        <th>POS</th>
-                        <th>NEG</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Roof_interior</td>
-                        <td id="pos-1-hz-${zone_num}">NA</td>
-                        <td id="neg-1-hz-${zone_num}">NA</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Roof_edge</td>
-                        <td id="pos-2-hz-${zone_num}">NA</td>
-                        <td id="neg-2-hz-${zone_num}">NA</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Roof_corner</td>
-                        <td id="pos-3-hz-${zone_num}">NA</td>
-                        <td id="neg-3-hz-${zone_num}">NA</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Wall_centre</td>
-                        <td id="pos-4-hz-${zone_num}">NA</td>
-                        <td id="neg-4-hz-${zone_num}">NA</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Wall_corner</td>
-                        <td id="pos-5-hz-${zone_num}">NA</td>
-                        <td id="neg-5-hz-${zone_num}">NA</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    `;
+      <div class="row gx-5">
+      <div id="hidden-except-zone-one" class="${hiddenClass}">
+          <div class="col-md-6">
+              <div class="mb-3">
+                  <label for="topographic-factor-hz-${zone_num}">Topographic Factor (Ct)</label>
+                  <p>By default the topographic factor is 1</p>
+                  <input type="number" id="topographic-factor-hz-${zone_num}" class="form-control" value="1"/>
+              </div>
+              <div class="mb-3">
+                  <label for="exposure-factor-selection-hz-${zone_num}">Exposure Factor (Ce)</label>
+                  <br>
+                  <div class="btn-group btn-group-toggle" id="exposure-factor-selection-hz-${zone_num}" data-toggle="buttons">
+                      <label class="btn btn-secondary" id="exposure-factor-open-option-button-hz-${zone_num}">
+                          <input type="radio" name="exposure-factor-selection-hz-${zone_num}" id="exposure-factor-open-option-hz-${zone_num}" autocomplete="off"> Open
+                      </label>
+                      <label class="btn btn-secondary" id="exposure-factor-rough-option-button-hz-${zone_num}">
+                          <input type="radio" name="exposure-factor-selection-hz-${zone_num}" id="exposure-factor-rough-option-hz-${zone_num}" autocomplete="off"> Rough
+                      </label>
+                      <label class="btn btn-secondary" id="exposure-factor-intermediate-option-button-hz-${zone_num}">
+                          <input type="radio" name="exposure-factor-selection-hz-${zone_num}" id="exposure-factor-intermediate-option-hz-${zone_num}" autocomplete="off"> Intermediate
+                      </label>
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <input type="number" id="ce-intermediate-hz-${zone_num}" class="form-control"/>
+              </div>
+              <div class="mb-3">
+                  <label>Gust Factor (Cg)</label>
+                  <p>2.5</p>
+              </div>
+              <div class="mb-3">
+                  <label for="internal-pressure-category-selection-hz-${zone_num}">Internal Pressure Category</label>
+                  <br>
+                  <div class="btn-group btn-group-toggle" id="internal-pressure-category-selection-hz-${zone_num}" data-toggle="buttons">
+                      <label class="btn btn-secondary" id="internal-pressure-category-enclosed-option-button-hz-${zone_num}">
+                          <input type="radio" name="internal-pressure-category-selection-hz-${zone_num}" id="internal-pressure-category-enclosed-option-hz-${zone_num}" autocomplete="off"> Enclosed
+                      </label>
+                      <label class="btn btn-secondary" id="internal-pressure-category-partially-enclosed-option-button-hz-${zone_num}">
+                          <input type="radio" name="internal-pressure-category-selection-hz-${zone_num}" id="internal-pressure-category-partially-enclosed-option-hz-${zone_num}" autocomplete="off"> Partially Enclosed
+                      </label>
+                      <label class="btn btn-secondary" id="internal-pressure-category-large-openings-option-button-hz-${zone_num}">
+                          <input type="radio" name="internal-pressure-category-selection-hz-${zone_num}" id="internal-pressure-category-large-openings-option-hz-${zone_num}" autocomplete="off"> Large Openings
+                      </label>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-my-6">
+        <hr>
+        <h5 id="wind-load-component-hz-${zone_num}">Height Zone ${zone_num}</h5>
+        <hr>
+          <label for="wind-load-table-hz-${zone_num}">Calculated Wind Load for Different Zones</label>
+          <table id="wind-load-table-hz-${zone_num}" class="table">
+              <colgroup>
+                  <col span="2">
+                  <col span="2">
+              </colgroup>
+              <thead>
+                  <tr>
+                      <th rowspan="2">Zone</th>
+                      <th rowspan="2">Zone Name</th>
+                      <th colspan="2" style="text-align:center;">Wind Load (kPa)</th>
+                  </tr>
+                  <tr>
+                      <th>POS</th>
+                      <th>NEG</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>1</td>
+                      <td>Roof_interior</td>
+                      <td id="pos-1-hz-${zone_num}">NA</td>
+                      <td id="neg-1-hz-${zone_num}">NA</td>
+                  </tr>
+                  <tr>
+                      <td>2</td>
+                      <td>Roof_edge</td>
+                      <td id="pos-2-hz-${zone_num}">NA</td>
+                      <td id="neg-2-hz-${zone_num}">NA</td>
+                  </tr>
+                  <tr>
+                      <td>3</td>
+                      <td>Roof_corner</td>
+                      <td id="pos-3-hz-${zone_num}">NA</td>
+                      <td id="neg-3-hz-${zone_num}">NA</td>
+                  </tr>
+                  <tr>
+                      <td>4</td>
+                      <td>Wall_centre</td>
+                      <td id="pos-4-hz-${zone_num}">NA</td>
+                      <td id="neg-4-hz-${zone_num}">NA</td>
+                  </tr>
+                  <tr>
+                      <td>5</td>
+                      <td>Wall_corner</td>
+                      <td id="pos-5-hz-${zone_num}">NA</td>
+                      <td id="neg-5-hz-${zone_num}">NA</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>`;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -401,7 +404,8 @@ function getWindLoads() {
         let internalPressureCategoryValues = [];
 
         for (let i = 1; i <= numHeightZones; i++) {
-          let inputs = getWindLoadInputs(i);
+          let inputs = getWindLoadInputs(1);
+          console.log({ inputs });
           ctValues.push(inputs.topographicFactor);
           exposureFactorValues.push(inputs.exposureFactor);
           manualCeCeiValues.push(inputs.ceIntermediate);
@@ -689,9 +693,11 @@ function getSnowLoad() {
         myHeaders.append("Accept", "application/json");
         myHeaders.append("Authorization", `Bearer ${token}`);
 
-        const numHeightZones = document.querySelectorAll(
-          'h5[id^="wind-load-component-hz-"]'
-        ).length;
+        const numHeightZones =
+          document.querySelectorAll('h5[id^="wind-load-component-hz-"]')
+            .length *
+            0 +
+          1;
         let exposureFactorSelection = document
           .getElementById(`exposure-factor-selection-hz-${numHeightZones}`)
           .querySelector(".selected").id;
@@ -819,7 +825,7 @@ document
     let numHeightZones = document.querySelectorAll(
       'h5[id^="wind-load-component-hz-"]'
     ).length;
-    for (let i = 1; i <= numHeightZones; i++) {
+    for (let i = 1; i <= 1; i++) {
       // check that the exposure factor and internal pressure category are selected and topographic factor is not empty
       let exposureFactor = document.querySelector(
         `input[name="exposure-factor-selection-hz-${i}"]:checked`
@@ -936,14 +942,14 @@ document
       '#roof-type-selection input[type="radio"]:checked'
     );
     let exposureFactorSelection = document
-      .getElementById(`exposure-factor-selection-hz-${numHeightZones}`)
+      .getElementById(`exposure-factor-selection-hz-${1}`)
       .querySelector(".selected");
     if (!exposureFactorSelection || !roofTypeSelection) {
       document.getElementById("snow-calculate-warning").style.color = "red";
       document.getElementById("snow-calculate-warning").style.fontWeight =
         "bold";
       document.getElementById("snow-calculate-warning").innerHTML =
-        "Please select the roof type and ensure exposure factor of last height zone is selected";
+        "Please select the roof type and ensure exposure factor is selected";
 
       document.getElementById("upwind-accumulation-factor").innerHTML = "NA";
       document.getElementById("downwind-accumulation-factor").innerHTML = "NA";
@@ -1070,7 +1076,7 @@ document
       document.getElementById("next-warning").innerHTML =
         "Please calculate the snow load before proceeding";
     } else {
-      window.location.href = "results.html";
+      window.location.href = "wall_cladding_results.html";
     }
   });
 
@@ -1287,7 +1293,7 @@ window.onload = function () {
         waitForElement(`topographic-factor-hz-${i}`, () => {
           // add event listener for topographic-factor-hz-i if the value is changed
           document
-            .getElementById(`topographic-factor-hz-${i}`)
+            .getElementById(`topographic-factor-hz-${1}`)
             .addEventListener("input", () => {
               // set the pos and neg of the associated wind load table to NA
               for (let j = 1; j <= 5; j++) {
@@ -1304,9 +1310,9 @@ window.onload = function () {
         // case if intermediate is selected
         waitForElement(`exposure-factor-intermediate-option-hz-${i}`, () => {
           document
-            .getElementById(`exposure-factor-intermediate-option-hz-${i}`)
+            .getElementById(`exposure-factor-intermediate-option-hz-${1}`)
             .addEventListener("click", () => {
-              document.getElementById(`ce-intermediate-hz-${i}`).style.display =
+              document.getElementById(`ce-intermediate-hz-${1}`).style.display =
                 "block";
               // set the pos and neg of the associated wind load table to NA
               for (let j = 1; j <= 5; j++) {
@@ -1317,7 +1323,7 @@ window.onload = function () {
 
           waitForElement(`ce-intermediate-hz-${i}`, () => {
             document
-              .getElementById(`ce-intermediate-hz-${i}`)
+              .getElementById(`ce-intermediate-hz-${1}`)
               .addEventListener("input", () => {
                 // set the pos and neg of the associated wind load table to NA
                 for (let j = 1; j <= 5; j++) {
@@ -1330,9 +1336,9 @@ window.onload = function () {
         // case if open is selected
         waitForElement(`exposure-factor-open-option-hz-${i}`, () => {
           document
-            .getElementById(`exposure-factor-open-option-hz-${i}`)
+            .getElementById(`exposure-factor-open-option-hz-${1}`)
             .addEventListener("click", () => {
-              document.getElementById(`ce-intermediate-hz-${i}`).style.display =
+              document.getElementById(`ce-intermediate-hz-${1}`).style.display =
                 "none";
               // set the pos and neg of the associated wind load table to NA
               for (let j = 1; j <= 5; j++) {
@@ -1345,9 +1351,9 @@ window.onload = function () {
         // case if rough is selected
         waitForElement(`exposure-factor-rough-option-hz-${i}`, () => {
           document
-            .getElementById(`exposure-factor-rough-option-hz-${i}`)
+            .getElementById(`exposure-factor-rough-option-hz-${1}`)
             .addEventListener("click", () => {
-              document.getElementById(`ce-intermediate-hz-${i}`).style.display =
+              document.getElementById(`ce-intermediate-hz-${1}`).style.display =
                 "none";
               // set the pos and neg of the associated wind load table to NA
               for (let j = 1; j <= 5; j++) {
@@ -1359,7 +1365,7 @@ window.onload = function () {
 
         waitForElement(`internal-pressure-category-selection-hz-${i}`, () => {
           document
-            .getElementById(`internal-pressure-category-selection-hz-${i}`)
+            .getElementById(`internal-pressure-category-selection-hz-${1}`)
             .addEventListener("click", () => {
               // set the pos and neg of the associated wind load table to NA
               for (let j = 1; j <= 5; j++) {

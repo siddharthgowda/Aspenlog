@@ -63,21 +63,21 @@ from backend.algorithms.load_combination_algorithms import (
     compute_wall_load_combinations,
     compute_roof_load_combinations,
 )
-from backend.algorithms.seismic_load_algorithms import (
+from backend.algorithms.wall_cladding.seismic_load_algorithms import (
     get_seismic_factor_values,
     get_floor_mapping,
     get_height_factor,
     get_horizontal_force_factor,
     get_specified_lateral_earthquake_force,
 )
-from backend.algorithms.snow_load_algorithms import (
+from backend.algorithms.wall_cladding.snow_load_algorithms import (
     get_slope_factor,
     get_accumulation_factor,
     get_wind_exposure_factor_snow,
     get_basic_roof_snow_load_factor,
     get_snow_load,
 )
-from backend.algorithms.wind_load_algorithms import (
+from backend.algorithms.wall_cladding.wind_load_algorithms import (
     get_wind_topographic_factor,
     get_wind_exposure_factor,
     get_wind_gust_factor,

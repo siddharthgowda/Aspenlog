@@ -215,6 +215,7 @@ class SiteDesignationInput extends HTMLElement {
   data() {
     if (this.currentSelection) {
       const { siteDesignation, seismicValue } = this.currentSelection;
+      console.log({ siteDesignation, seismicValue });
 
       // Validate Xs (Site Designation)
       if (
@@ -235,6 +236,38 @@ class SiteDesignationInput extends HTMLElement {
     }
 
     return null;
+  }
+
+  /**
+   * Sets the current selection based on user saved input.
+   * @param {string} type - The type of input ("xs" or "xv").
+   * @param {string|number} value - The value of the input ("A", "B", "C", "D", "E" for "xs" or a number for "xv").
+   */
+  setData(type, value) {
+    this.currentSelection = {
+      siteDesignation: type,
+      seismicValue: value,
+    };
+
+    if (type === "xs") {
+      // Show Xs dropdown and hide Vs30 input
+      this.XsDropdown.classList.remove("hidden");
+      this.XsDropdown.classList.add("visible");
+      this.XvInput.classList.remove("visible");
+      this.XvInput.classList.add("hidden");
+
+      // Update Xs dropdown selection
+      this.siteDesignationSelect.value = value;
+    } else if (type === "xv") {
+      // Show Vs30 input and hide Xs dropdown
+      this.XvInput.classList.remove("hidden");
+      this.XvInput.classList.add("visible");
+      this.XsDropdown.classList.remove("visible");
+      this.XsDropdown.classList.add("hidden");
+
+      // Update Vs30 input value
+      this.siteClassInput.value = value;
+    }
   }
 }
 

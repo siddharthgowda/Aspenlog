@@ -8,7 +8,9 @@
 #
 # Author: Noah Subedar [https://github.com/noahsub]
 ########################################################################################################################
-
+# NOTE: These algorithims are poorly written and have only been kept in order to accomidate legacy implmentations of
+# load combinations for wall cladding algorithims. The actual aogrithims are in `load_combinations_algorithims.py`
+# 
 ########################################################################################################################
 # IMPORTS
 ########################################################################################################################
@@ -2178,3 +2180,25 @@ def compute_roof_load_combinations(
             )
             # Return the dataframe containing the roof load combinations
             return df
+
+###############################################################################################
+# Simple load calculations (used in main calcualtions and should be used in the future)
+# Author: Siddharth Gowda [https://github.com/noahsub]
+###############################################################################################
+
+from backend.Constants.materials import Materials
+
+OFFICE_LIVE_LOAD_KPA_PER_UNIT = 4.8
+
+# NOTE: this function won't be used since it's a user input
+def calculate_dead_load(width, reference_height, material: Materials):
+    return width * reference_height * Materials.get_density(material)
+
+# Live Load (NBCC Table 4.1.5.3)
+# NOTE: for now will a simplification of live load
+
+def calculate_live_load(width, reference_height):
+    return OFFICE_LIVE_LOAD_KPA_PER_UNIT * width * reference_height
+
+def calculate_wind_load(width, reference_height, dynamic_pressure):
+    return width * reference_height * dynamic_pressure

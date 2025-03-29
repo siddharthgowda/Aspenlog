@@ -1,0 +1,103 @@
+<!--
+mainStructure/wind.html
+This file is the main structure page for the frontend.
+
+Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
+By using this code, you agree to abide by the terms and conditions in those files.
+
+Author: Noah Subedar [https://github.com/noahsub]
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>ASPENLOG 2020</title>
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
+  <link href="main_structure_load.css" rel="stylesheet" />
+  <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+  <script crossorigin="anonymous" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="./components/navbar.js"></script>
+  <custom-navbar></custom-navbar>
+  <div class="mb-3" style="padding: 40px">
+    <h3>Wind Load</h3>
+    <hr />
+    <h4>Select Wind Load Inputs</h4>
+    <p>Will be applied to all height zones</p>
+    <div id="wind-load-inputs-container" class="row gx-5 mb-3">
+      <div id="ce" class="mb-3">
+        <label for="ce">Ce</label>
+        <select id="ce-select">
+          <option value="">Select...</option>
+          <option value="OPEN">Open</option>
+          <option value="ROUGH">Rough</option>
+          <option value="INTERMEDIATE">Intermediate</option>
+        </select>
+        <div id="ce-intermediate-container" class="hidden">
+          <label for="ce-intermediate-value">Intermediate Ce Value</label>
+          <p>Range 0.5 - 2.5</p>
+          <input type="number" id="ce-intermediate-value" min="0.5" max="1.5" step="0.1" placeholder="" required>
+        </div>
+      </div>
+      <div id="ct" class="mb-3">
+        <label for="ct-input">Ct</label>
+        <p>1.0 if slope is less than or equal to 0.1 (most cases). Otherwise ct is 2 (hill slope is greather than 0.1).
+        </p>
+        <input id="ct-input" type="number" name="ct" value="1.0" step="0.01" />
+      </div>
+      <div id="uls-sls-selection" class="mb-3">
+        <label for="uls-sls-selection">ULS or SLS</label>
+        <p>Will perform calculations using an SLS or ULS scalar</p>
+        <select id="uls-sls-selection-select">
+          <option value="">Select...</option>
+          <option value="ULS">ULS</option>
+          <option value="SLS">SLS</option>
+        </select>
+      </div>
+      <div id="face-selection-selection" class="mb-3">
+        <label for="face-selection-selection">Choose Face for Calculations</label>
+        <p>Will perform calculations for a certain face</p>
+        <select id="face-selection-selection-select">
+          <option value="">Select...</option>
+          <option value="WINDWARD">Windward</option>
+          <option value="LEEWARD">Leeward</option>
+          <option value="SIDEWALLS">Side Walls</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="calculate">Calculate</button>
+    <hr />
+    <div class="my-3">
+      <h4>Wind Results</h4>
+      <p>Ce & Cg - Calculated from NBCC2020 4.1.7.8</p>
+      <p> Cp - Calculated from NBCC2020 Figure 4.1.7.5</p>
+      <p> Ct - Can be calculated from NBCC2020 Figure 4.1.7.4 (special cases for topographic factor can be calculated with the procedure in this section) </p>
+      <script src="./components/custom_table.js"></script>
+      <custom-table class="table" id="wind-pressure-factors-table" />
+    </div>
+    <hr />
+    <div class="mb-3 row gx-5 align-items-center">
+      <script src="./components/alert_box.js"></script>
+      <alert-box id="alert-box"></alert-box>
+      <div class="col-md-6">
+        <script src="./components/page_button.js"></script>
+        <page-button id="back-button" page="./engineer_selection">Back</page-button>
+        <page-button id="home-button" page="./home">Home</page-button>
+        <button class="btn btn-primary" id="save-button">Save</button>
+        <button class="btn btn-primary" id="next-button">Next</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+<script src="main_structure_load.js"></script>

@@ -1,34 +1,33 @@
 ########################################################################################################################
-# dimensions_endpoint.py
-# This file contains the endpoints used for creating a dimensions object for a user. It includes the following
+# natural_frequency_endpoint.py
+# This file contains the endpoints used for the natural frequency of the building. 
+# It includes the following
 # endpoints:
-#   - /dimensions: POST request to create a dimensions object for a user
+#   - /natural_frequency: POST request to set the natural frequency for a user
 #
 # Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
 # By using this code, you agree to abide by the terms and conditions in those files.
 #
-# Author: Noah Subedar [https://github.com/noahsub]
+# Author: Siddharth Gowda [https://github.com/siddharthgowda]
 ########################################################################################################################
 
 ########################################################################################################################
 # IMPORTS
 ########################################################################################################################
-
 from fastapi import APIRouter, Depends, HTTPException
 
 from backend.API.Managers.authentication_manager import decode_token
-from backend.API.Managers.dimensions_manager import process_dimension_data
 from backend.API.Managers.user_data_manager import (
     check_user_exists,
-    set_user_dimensions,
+    set_user_natural_frequency,
 )
-from backend.API.Models.dimensions_input import DimensionsInput
+from backend.API.Models.natural_frequency_input import NaturalFrequencyInput
 
 ########################################################################################################################
 # ROUTER
 ########################################################################################################################
 
-dimensions_router = APIRouter()
+natural_frequency_endpoint_router = APIRouter()
 
 
 ########################################################################################################################
@@ -36,33 +35,29 @@ dimensions_router = APIRouter()
 ########################################################################################################################
 
 
-@dimensions_router.post("/dimensions")
-def dimensions_endpoint(
-    dimensions_input: DimensionsInput, username: str = Depends(decode_token)
+@natural_frequency_endpoint_router.post("/natural_frequency")
+def natural_frequency_endpoint(
+    natural_frequency_input: NaturalFrequencyInput,
+    username: str = Depends(decode_token),
 ):
     """
-    Creates a dimensions object for a user
-    :param dimensions_input: The input data for the dimensions
+    Sets the natural frequency for a user
+    :param natural_frequency_input: The input data for the natural frequency of the building
     :param username: The username of the user
-    :return: A dimensions object
+    :return: The natural frequency object set by the user
     """
     try:
         # If storage for the user does not exist in memory, create a slot for the user
         check_user_exists(username)
-        # Process the dimensions data and create a dimensions object
-        dimensions = process_dimension_data(
-            width=max(dimensions_input.width_along, dimensions_input.width_across),
-            width_along=dimensions_input.width_along,
-            width_across=dimensions_input.width_across,
-            height=dimensions_input.height,
-            eave_height=dimensions_input.eave_height,
-            ridge_height=dimensions_input.ridge_height,
-            sea_level=dimensions_input.sea_level
+        # Process the natural frequency data and create an natural frequency object
+        natural_frequency = natural_frequency_input.frequency
+        assert(natural_frequency is not None)
+        # Store the natural frequency object in the user's memory slot
+        set_user_natural_frequency(
+            username=username, natural_frequency=natural_frequency
         )
-        # Store the dimensions object in the user's memory slot
-        set_user_dimensions(username=username, dimensions=dimensions)
-        # Return the dimensions object
-        return dimensions
+        # Return the natural frequency object
+        return natural_frequency
     # If something goes wrong, raise an error
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

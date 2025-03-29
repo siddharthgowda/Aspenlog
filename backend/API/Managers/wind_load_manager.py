@@ -23,7 +23,7 @@ from backend.Entities.Location.location import Location
 from backend.Entities.Wind.wind_factor import WindFactorBuilder
 from backend.Entities.Wind.wind_load import WindLoadBuilder
 from backend.Entities.Wind.wind_pressure import WindPressureBuilder
-from backend.algorithms.wind_load_algorithms import (
+from backend.algorithms.wall_cladding.wind_load_algorithms import (
     get_wind_topographic_factor,
     get_wind_exposure_factor,
     get_wind_gust_factor,

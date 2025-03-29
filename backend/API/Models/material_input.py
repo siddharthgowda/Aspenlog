@@ -1,6 +1,6 @@
 ########################################################################################################################
-# dimensions_input.py
-# This file contains the input model for the dimensions object.
+# importance_category_input.py
+# This file contains the input model for the importance category object.
 #
 # Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
 # By using this code, you agree to abide by the terms and conditions in those files.
@@ -12,7 +12,6 @@
 # IMPORTS
 ########################################################################################################################
 
-from typing import Optional
 from pydantic import BaseModel
 
 
@@ -21,23 +20,10 @@ from pydantic import BaseModel
 ########################################################################################################################
 
 
-class DimensionsInput(BaseModel):
+class MaterialTypeInput(BaseModel):
     """
-    The input model for the dimensions object
+    The input model for the material type
     """
 
-    # The width across the building
-    width_across: float
-
-    # The width along the building
-    width_along: float
-
-    # sea level
-    sea_level: float
-
-    # The height of the building
-    height: Optional[float]
-    # The eave height of the building
-    eave_height: Optional[float]
-    # The ridge height of the building
-    ridge_height: Optional[float]
+    # The importance category
+    material_type: str

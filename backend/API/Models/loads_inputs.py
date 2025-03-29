@@ -1,11 +1,11 @@
 ########################################################################################################################
-# dimensions_input.py
-# This file contains the input model for the dimensions object.
+# loads_inputs.py
+# This file contains the input model for the mLoadsInput object.
 #
 # Please refer to the LICENSE and DISCLAIMER files for more information regarding the use and distribution of this code.
 # By using this code, you agree to abide by the terms and conditions in those files.
 #
-# Author: Noah Subedar [https://github.com/noahsub]
+# Author: Siddharth Gowda [https://github.com/siddharthgowda]
 ########################################################################################################################
 
 ########################################################################################################################
@@ -13,31 +13,40 @@
 ########################################################################################################################
 
 from typing import Optional
-from pydantic import BaseModel
 
+from pydantic import BaseModel
 
 ########################################################################################################################
 # MODEL
 ########################################################################################################################
 
 
-class DimensionsInput(BaseModel):
+class LoadsInput(BaseModel):
     """
-    The input model for the dimensions object
+    The input model for the wind load object
     """
 
-    # The width across the building
-    width_across: float
+    # The dead coef
+    dead_coef: Optional[float]
+    
 
-    # The width along the building
-    width_along: float
+    # The live coef
+    live_coef: Optional[float]
 
-    # sea level
-    sea_level: float
+    # The wind coef
+    wind_coef: Optional[float]
 
-    # The height of the building
-    height: Optional[float]
-    # The eave height of the building
-    eave_height: Optional[float]
-    # The ridge height of the building
-    ridge_height: Optional[float]
+    # wind face, windward, leeward, side_walls
+    wind_face: Optional[str]
+
+    # The snow coef
+    snow_coef: Optional[float]
+
+    # The siesmic coef
+    seismic_coef: Optional[float]
+    
+    # is it ULS or SLS
+    uls_or_sls: Optional[str]
+
+
+

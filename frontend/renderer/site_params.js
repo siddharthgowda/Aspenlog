@@ -37,20 +37,44 @@ let MAP;
 
 window.onload = async function () {
   const resultsTable = document.getElementById("climate-sesmic-table");
-  // rendering empty Climate and Sesmic Table, ONLY Headers
   resultsTable.render(CLIMATE_SESMIC_TABLE_HEADER, [[]]);
+
   // Setting Map Pin to Myhal University of Toronto
   setMap(43.66074, -79.39661, "Myhal Centre, Toronto, Ontario, Canada");
 
-  // setting user save data
-
+  // Load saved data
   const saveData = await getUserSaveFile();
-  const { projectName } = saveData;
-
   console.log({ saveData });
 
-  const projectNameInput = document.getElementById("project-name");
-  projectNameInput.value = projectName;
+  if (saveData) {
+    const projectNameInput = document.getElementById("project-name");
+    projectNameInput.value = saveData.projectName || "";
+
+    const siteDesignationInput = document.getElementById(
+      "site-designation-input"
+    );
+    // Assuming a method to set data for siteDesignationInput
+    siteDesignationInput.setData(
+      saveData.siteDesignation,
+      saveData.seismicValue
+    );
+
+    const addressInput = document.getElementById("address");
+    addressInput.value = saveData.address || "";
+
+    const importanceCategorySelect = document.getElementById(
+      "importance-category-select"
+    );
+    importanceCategorySelect.value = saveData.importanceCategory || "";
+
+    const materialTypeSelect = document.getElementById("material-type-select");
+    materialTypeSelect.value = saveData.materialType || "";
+
+    const naturalFrequencyInput = document.getElementById(
+      "fundamental-natural-value"
+    );
+    naturalFrequencyInput.value = saveData.naturalFrequency || "";
+  }
 
   window.scrollTo(0, 0);
 };
@@ -212,11 +236,27 @@ document.getElementById("save-button").addEventListener("click", async () => {
 document.getElementById("next-button").addEventListener("click", async () => {
   const projectNameInput = document.getElementById("project-name");
   const projectNameValue = projectNameInput.value;
+
+  const natrualFrequencyInput = document.getElementById(
+    "fundamental-natural-value"
+  );
+  const natrualFrequencyValue = parseFloat(natrualFrequencyInput.value);
+
   const importanceCategorySelect = document.getElementById(
     "importance-category-select"
   );
   const importanceCategory = importanceCategorySelect.value;
-  console.log({ importanceCategory, projectNameValue, isLocationDataSet });
+
+  const materialTypeSelect = document.getElementById("material-type-select");
+  const materialType = materialTypeSelect.value;
+
+  console.log({
+    natrualFrequencyValue,
+    importanceCategory,
+    projectNameValue,
+    isLocationDataSet,
+    materialType,
+  });
 
   if (!projectNameValue) {
     const alertBox = document.getElementById("alert-box");
@@ -235,10 +275,24 @@ document.getElementById("next-button").addEventListener("click", async () => {
     return;
   }
 
+  if (!materialType) {
+    const alertBox = document.getElementById("alert-box");
+    alertBox.alert("Please Choose An materialType");
+    return;
+  }
+
+  if (!natrualFrequencyValue) {
+    const alertBox = document.getElementById("alert-box");
+    alertBox.alert("Please enter a valid natural frequency");
+    return;
+  }
+
   const alertBox = document.getElementById("alert-box");
   alertBox.alert("Proccessing and Saving data", NOTIFICATION);
   // Sending importance category to backend
+  await naturalFrequencyCall(natrualFrequencyValue);
   await importanceCategoryCall(importanceCategory);
+  await materialTypeCall(materialType);
   await save();
   alertBox.hide();
   window.location.href = "building_geometry.html";
@@ -283,6 +337,45 @@ async function locationCall(address, siteDesignation, seismicValue) {
   }
 }
 
+async function naturalFrequencyCall(naturalFrequency) {
+  try {
+    const connectionAddress = await window.api.invoke("get-connection-address");
+    const token = await window.api.invoke("get-token");
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+
+    const body = JSON.stringify({
+      frequency: naturalFrequency, // Matches Pydantic model field name
+    });
+
+    const request = {
+      method: "POST",
+      headers,
+      body,
+      redirect: "follow",
+    };
+
+    console.log({ request });
+    const response = await fetch(
+      `${connectionAddress}/natural_frequency`,
+      request
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("natural frequency set successfully:", data);
+      return data;
+    }
+  } catch (error) {
+    console.log({ error });
+    console.error({ error });
+    return null;
+  }
+}
+
 async function importanceCategoryCall(importanceCategory) {
   try {
     const connectionAddress = await window.api.invoke("get-connection-address");
@@ -316,27 +409,53 @@ async function importanceCategoryCall(importanceCategory) {
   }
 }
 
+async function materialTypeCall(materialType) {
+  try {
+    const connectionAddress = await window.api.invoke("get-connection-address");
+    const token = await window.api.invoke("get-token");
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+
+    const body = JSON.stringify({
+      material_type: materialType, // Matches Pydantic model field name
+    });
+
+    const request = {
+      method: "POST",
+      headers,
+      body,
+      redirect: "follow",
+    };
+
+    console.log({ request });
+    const response = await fetch(`${connectionAddress}/material_type`, request);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Material type set successfully:", data);
+      return data;
+    }
+  } catch (error) {
+    console.error({ error });
+    return null;
+  }
+}
+
 async function save() {
   try {
     const connectionAddress = await window.api.invoke("get-connection-address");
     const token = await window.api.invoke("get-token");
 
-    // Getting the project name from the HTML
-    let projectName = document.getElementById("project-name").value.trim();
-    projectName = projectName || "New Project";
-
-    // creating save Data object
-
-    const saveData = { projectName };
-
-    const headers = new Headers();
-    headers.append("Accept", "application/json");
-    headers.append("Authorization", `Bearer ${token}`);
-
-    // Step 1: Fetch the current save file ID
+    // Fetch the current save data
     const getSaveFileRequestOptions = {
       method: "POST",
-      headers: headers,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       redirect: "follow",
     };
 
@@ -352,11 +471,82 @@ async function save() {
     const result = await saveFileResponse.json();
     const saveFileId = parseInt(result);
 
-    // Step 2: Save the JSON data with the project name
+    // Fetch the current save data
+    const getSaveDataRequestOptions = {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      redirect: "follow",
+    };
+
+    const getSaveDataResponse = await fetch(
+      `${connectionAddress}/get_user_save_data/${saveFileId}`,
+      getSaveDataRequestOptions
+    );
+
+    if (getSaveDataResponse.status !== 200) {
+      throw new Error("Failed to fetch the current save data");
+    }
+
+    const currentSaveData = await getSaveDataResponse.json();
+    const currentSaveDataJSON = JSON.parse(currentSaveData.json_data);
+
+    // Collecting all user inputs
+    const projectNameInput = document.getElementById("project-name");
+    const projectName = projectNameInput.value.trim() || "New Project";
+
+    const siteDesignationInput = document.getElementById(
+      "site-designation-input"
+    );
+    const chosenDesignation = siteDesignationInput.data();
+    const { siteDesignation, seismicValue } = chosenDesignation;
+
+    const addressInput = document.getElementById("address");
+    const address = addressInput.value;
+
+    const importanceCategorySelect = document.getElementById(
+      "importance-category-select"
+    );
+    const importanceCategory = importanceCategorySelect.value;
+
+    const materialTypeSelect = document.getElementById("material-type-select");
+    const materialType = materialTypeSelect.value;
+
+    const naturalFrequencyInput = document.getElementById(
+      "fundamental-natural-value"
+    );
+    const naturalFrequency = parseFloat(naturalFrequencyInput.value);
+
+    // Creating save data object
+    const newSaveData = {
+      projectName,
+      siteDesignation,
+      seismicValue,
+      address,
+      importanceCategory,
+      materialType,
+      naturalFrequency,
+    };
+
+    if (isLocationDataSet) {
+      const resultsTable = document.getElementById("climate-sesmic-table");
+      const tableData = resultsTable.data();
+      newSaveData.climateSesmicData = tableData;
+    }
+
+    // Merge new data with existing data
+    const updatedSaveData = { ...currentSaveDataJSON, ...newSaveData };
+
+    // Save the updated JSON data
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
     const body = JSON.stringify({
-      json_data: JSON.stringify(saveData),
+      json_data: JSON.stringify(updatedSaveData),
       id: saveFileId,
     });
 

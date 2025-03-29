@@ -19,7 +19,7 @@ from backend.Entities.Building.building import Building
 from backend.Entities.Location.location import Location
 from backend.Entities.Seismic.seismic_factor import SeismicFactorBuilder
 from backend.Entities.Seismic.seismic_load import SeismicLoadBuilder
-from backend.algorithms.seismic_load_algorithms import (
+from backend.algorithms.wall_cladding.seismic_load_algorithms import (
     get_seismic_factor_values,
     get_height_factor,
     get_horizontal_force_factor,

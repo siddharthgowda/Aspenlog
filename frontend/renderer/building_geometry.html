@@ -33,9 +33,15 @@ Author: Siddharth Gowda [https://github.com/siddharthgowda]
         <div class="mx-4 p-4">
                 <!-- Building Width -->
                 <div class="mb-3">
-                    <label for="width">Building Width (m)</label>
-                    <p>Use width of the widest part of the building.</p>
-                    <input class="form-control" id="width" type="number" name="building_width" />
+                    <label for="width-across">Across-Wind Effective Width (m)</label>
+                    <p>Wind hitting the face (W).</p>
+                    <input class="form-control" id="width-across" type="number" name="building_width" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="width-along">Along-Wind Effective Depth (m)</label>
+                    <p>Wind parallel to face (D)</p>
+                    <input class="form-control" id="width-along" type="number" name="building_width" />
                 </div>
 
                 <!-- Floor Elevation Inputs -->

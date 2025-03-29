@@ -19,6 +19,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import sessionmaker
 
 from backend.Constants.importance_factor_constants import ImportanceFactor
+from backend.Constants.materials import Materials
 from backend.Entities.Building.building import Building
 from backend.Entities.Building.cladding import Cladding
 from backend.Entities.Building.dimensions import Dimensions
@@ -158,6 +159,14 @@ def set_user_material_load(username: str, material_load) -> None:
     """
     ALL_USER_DATA[username].set_material_load(material_load)
 
+def set_user_natural_frequency(username: str, natural_frequency: float):
+    """
+    Sets the natural_frequency of the building
+    :param natural_frequency: The natural_frequency of the building
+    :return: None
+    """
+    ALL_USER_DATA[username].natural_frequency = natural_frequency
+
 
 def set_user_height_zones(username: str, height_zones) -> None:
     """
@@ -189,6 +198,17 @@ def set_user_importance_category(
     :return: None
     """
     ALL_USER_DATA[username].set_importance_category(importance_category)
+
+def set_user_material_type(
+    username: str, material_type: Materials
+) -> None:
+    """
+    Sets the material_type for the user
+    :param username: The username of the user
+    :param material_type: The material_type
+    :return: None
+    """
+    ALL_USER_DATA[username].set_material_type(material_type)
 
 
 def set_user_snow_load(username: str, snow_load) -> None:
@@ -333,6 +353,15 @@ def get_user_material_load(username: str):
     return ALL_USER_DATA.get(username).get_material_load()
 
 
+def get_user_natural_frequency(username: str):
+    """
+    Return the natural_frequency of the building
+    :param natural_frequency: The natural_frequency of the building
+    :return: None
+    """
+    return ALL_USER_DATA.get(username).get_natural_frequency()
+
+
 def get_user_height_zones(username: str):
     """
     Gets the height zones for the user
@@ -358,6 +387,14 @@ def get_user_importance_category(username: str):
     :return: The importance category
     """
     return ALL_USER_DATA.get(username).get_importance_category()
+
+def get_user_material_type(username: str):
+    """
+    Gets the material_type for the user
+    :param username: The username of the user
+    :return: The material_type
+    """
+    return ALL_USER_DATA.get(username).get_material_type()
 
 
 def get_user_snow_load(username: str):
