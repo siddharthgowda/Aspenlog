@@ -106,7 +106,7 @@ def get_pressure_coefficient(H, D, face_choice: WindFaceConstants):
             Cp = 0.27 * (H_D_ratio + 2)
         else:  # H/D ≥ 1.0
             Cp = 0.8
-    elif face_choice == WindFaceConstants.LEWARD_FACE:
+    elif face_choice == WindFaceConstants.LEEWARD_FACE:
         if H_D_ratio < 0.25:
             Cp = -0.3
         elif 0.25 <= H_D_ratio < 1.0:

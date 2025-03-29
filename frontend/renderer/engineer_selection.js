@@ -38,7 +38,7 @@ document.getElementById("next-button").addEventListener("click", () => {
   if (engineerDropdown.value == MAIN_ENGINEER) {
     window.location.href = "main_structure_load.html";
   } else if (engineerDropdown.value == WALL_CLADDING_ENGINEER) {
-    window.location.href = "load.html";
+    window.location.href = "wall_cladding_load.html";
   } else {
     alertBox.alert("Please choose an engineering type");
   }

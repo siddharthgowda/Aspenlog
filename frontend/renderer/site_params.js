@@ -37,20 +37,44 @@ let MAP;
 
 window.onload = async function () {
   const resultsTable = document.getElementById("climate-sesmic-table");
-  // rendering empty Climate and Sesmic Table, ONLY Headers
   resultsTable.render(CLIMATE_SESMIC_TABLE_HEADER, [[]]);
+
   // Setting Map Pin to Myhal University of Toronto
   setMap(43.66074, -79.39661, "Myhal Centre, Toronto, Ontario, Canada");
 
-  // setting user save data
-
+  // Load saved data
   const saveData = await getUserSaveFile();
-  const { projectName } = saveData;
-
   console.log({ saveData });
 
-  const projectNameInput = document.getElementById("project-name");
-  projectNameInput.value = projectName;
+  if (saveData) {
+    const projectNameInput = document.getElementById("project-name");
+    projectNameInput.value = saveData.projectName || "";
+
+    const siteDesignationInput = document.getElementById(
+      "site-designation-input"
+    );
+    // Assuming a method to set data for siteDesignationInput
+    siteDesignationInput.setData(
+      saveData.siteDesignation,
+      saveData.seismicValue
+    );
+
+    const addressInput = document.getElementById("address");
+    addressInput.value = saveData.address || "";
+
+    const importanceCategorySelect = document.getElementById(
+      "importance-category-select"
+    );
+    importanceCategorySelect.value = saveData.importanceCategory || "";
+
+    const materialTypeSelect = document.getElementById("material-type-select");
+    materialTypeSelect.value = saveData.materialType || "";
+
+    const naturalFrequencyInput = document.getElementById(
+      "fundamental-natural-value"
+    );
+    naturalFrequencyInput.value = saveData.naturalFrequency || "";
+  }
 
   window.scrollTo(0, 0);
 };
@@ -425,22 +449,13 @@ async function save() {
     const connectionAddress = await window.api.invoke("get-connection-address");
     const token = await window.api.invoke("get-token");
 
-    // Getting the project name from the HTML
-    let projectName = document.getElementById("project-name").value.trim();
-    projectName = projectName || "New Project";
-
-    // creating save Data object
-
-    const saveData = { projectName };
-
-    const headers = new Headers();
-    headers.append("Accept", "application/json");
-    headers.append("Authorization", `Bearer ${token}`);
-
-    // Step 1: Fetch the current save file ID
+    // Fetch the current save data
     const getSaveFileRequestOptions = {
       method: "POST",
-      headers: headers,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       redirect: "follow",
     };
 
@@ -456,11 +471,82 @@ async function save() {
     const result = await saveFileResponse.json();
     const saveFileId = parseInt(result);
 
-    // Step 2: Save the JSON data with the project name
+    // Fetch the current save data
+    const getSaveDataRequestOptions = {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      redirect: "follow",
+    };
+
+    const getSaveDataResponse = await fetch(
+      `${connectionAddress}/get_user_save_data/${saveFileId}`,
+      getSaveDataRequestOptions
+    );
+
+    if (getSaveDataResponse.status !== 200) {
+      throw new Error("Failed to fetch the current save data");
+    }
+
+    const currentSaveData = await getSaveDataResponse.json();
+    const currentSaveDataJSON = JSON.parse(currentSaveData.json_data);
+
+    // Collecting all user inputs
+    const projectNameInput = document.getElementById("project-name");
+    const projectName = projectNameInput.value.trim() || "New Project";
+
+    const siteDesignationInput = document.getElementById(
+      "site-designation-input"
+    );
+    const chosenDesignation = siteDesignationInput.data();
+    const { siteDesignation, seismicValue } = chosenDesignation;
+
+    const addressInput = document.getElementById("address");
+    const address = addressInput.value;
+
+    const importanceCategorySelect = document.getElementById(
+      "importance-category-select"
+    );
+    const importanceCategory = importanceCategorySelect.value;
+
+    const materialTypeSelect = document.getElementById("material-type-select");
+    const materialType = materialTypeSelect.value;
+
+    const naturalFrequencyInput = document.getElementById(
+      "fundamental-natural-value"
+    );
+    const naturalFrequency = parseFloat(naturalFrequencyInput.value);
+
+    // Creating save data object
+    const newSaveData = {
+      projectName,
+      siteDesignation,
+      seismicValue,
+      address,
+      importanceCategory,
+      materialType,
+      naturalFrequency,
+    };
+
+    if (isLocationDataSet) {
+      const resultsTable = document.getElementById("climate-sesmic-table");
+      const tableData = resultsTable.data();
+      newSaveData.climateSesmicData = tableData;
+    }
+
+    // Merge new data with existing data
+    const updatedSaveData = { ...currentSaveDataJSON, ...newSaveData };
+
+    // Save the updated JSON data
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
     const body = JSON.stringify({
-      json_data: JSON.stringify(saveData),
+      json_data: JSON.stringify(updatedSaveData),
       id: saveFileId,
     });
 

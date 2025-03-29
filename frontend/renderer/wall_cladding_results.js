@@ -411,7 +411,7 @@ document
  */
 document.getElementById("back-button").addEventListener("click", async () => {
   await save();
-  window.location.href = "load.html";
+  window.location.href = "wall_cladding_load.html";
 });
 
 /**

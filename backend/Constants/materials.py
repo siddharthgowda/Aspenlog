@@ -44,3 +44,17 @@ class Materials(Enum):
         for material in cls:
             materials_list.append(material.name)
         return materials_list
+    
+    @classmethod
+    def get_density(self, material):
+        
+        match material:
+            case self.CONCRETE:
+                return 2400 #kg/m^3
+            case self.STEEL:
+                return 7930
+            case self.COMPOSITE:
+                return (2400 + 7930) / 2
+        
+            
+

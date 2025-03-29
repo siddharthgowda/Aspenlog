@@ -19,7 +19,7 @@ from backend.Entities.Building.building import Building
 from backend.Entities.Location.location import Location
 from backend.Entities.Snow.snow_factor import SnowFactorBuilder
 from backend.Entities.Snow.snow_load import SnowLoadBuilder
-from backend.algorithms.snow_load_algorithms import (
+from backend.algorithms.wall_cladding.snow_load_algorithms import (
     get_slope_factor,
     get_accumulation_factor,
     get_wind_exposure_factor_snow,

@@ -123,6 +123,7 @@ if __name__ == "__main__":
         roof_load_combination_router,
     )
     from backend.API.Endpoints.seismic_load_endpoint import seismic_load_router
+    from backend.API.Endpoints.main_structure_loads_endpoint import main_structure_loads_router
     from backend.API.Endpoints.server_status_endpoint import server_status_endpoint
     from backend.API.Endpoints.snow_load_endpoint import snow_load_router
     from backend.API.Endpoints.user_data_endpoint import user_data_router
@@ -151,6 +152,7 @@ if __name__ == "__main__":
     app.include_router(seismic_load_router)
     app.include_router(snow_load_router)
     app.include_router(wall_load_combination_router)
+    app.include_router(main_structure_loads_router)
     app.include_router(roof_load_combination_router)
     app.include_router(server_status_endpoint)
     app.include_router(visualization_router)

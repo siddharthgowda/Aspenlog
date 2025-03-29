@@ -50,7 +50,7 @@ def process_dimension_data(
         dimensions_builder.set_sea_level(sea_level)
     # If the eave height and ridge height are provided, use the eave ridge dimensions builder
     else:
-        # DEPRICATED
+        # DEPRICATED!!!
         # this is not relevant to the app since we are only concerned about high rise buildings, NOT residential buildings
         dimensions_builder = EaveRidgeDimensionsBuilder()
         dimensions_builder.set_width(width)

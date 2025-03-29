@@ -1076,7 +1076,7 @@ document
       document.getElementById("next-warning").innerHTML =
         "Please calculate the snow load before proceeding";
     } else {
-      window.location.href = "results.html";
+      window.location.href = "wall_cladding_results.html";
     }
   });
 

@@ -53,5 +53,5 @@ class WindFaceConstants(Enum):
     """
 
     WINDWARD_FACE: str = "Windward Face"
-    LEWARD_FACE: str = "Leeward Face"
+    LEEWARD_FACE: str = "Leeward Face"
     WALLS_PARALLEL_TO_WIND: str = "Walls Parallel to Wind Direction"

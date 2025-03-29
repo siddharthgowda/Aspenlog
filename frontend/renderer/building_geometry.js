@@ -18,7 +18,7 @@
 // ON PAGE LOAD (First Function Ran)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-window.onload = function () {};
+window.onload = async function () {};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Events and Defined Event Functions
@@ -59,6 +59,7 @@ document
     heightZoneTableContainer.classList.remove("hidden");
     heightZoneTableContainer.classList.remove("visible");
     heightZoneTable.render(floorsElevationData);
+    alertbox.hide();
   });
 
 // If dominant hieght exists, display dropdown to input mid height information
@@ -87,6 +88,8 @@ document
 document.getElementById("next-button").addEventListener("click", async () => {
   const alertbox = document.getElementById("alert-box");
   const floorElevationInput = document.getElementById("floor-elevation-input");
+
+  alertbox.alert("Validating Inputed Data ...", NOTIFICATION);
 
   const widthAcross = parseFloat(document.getElementById("width-across").value);
   if (!widthAcross || widthAcross <= 0) {

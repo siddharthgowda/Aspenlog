@@ -86,7 +86,7 @@ def process_main_structure_wind_factors(
         dimensions.height, dimensions.width_along, WindFaceConstants.WINDWARD_FACE
     )
     wind_factor.cp_leeward = get_pressure_coefficient(
-        dimensions.height, dimensions.width_along, WindFaceConstants.LEWARD_FACE
+        dimensions.height, dimensions.width_along, WindFaceConstants.LEEWARD_FACE
     )
     wind_factor.cp_side_walls = get_pressure_coefficient(
         dimensions.height, dimensions.width_along, WindFaceConstants.WALLS_PARALLEL_TO_WIND
