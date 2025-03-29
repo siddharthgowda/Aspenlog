@@ -89,6 +89,7 @@ You can see how the program is structured and how to use here: [Documentation](h
 
 <table>
   <tr>
+    <td align="center" class="author"><a href="https://github.com/siddharthgowda"><img src="assets/images/profile/noahsub.png" alt=""/><br /><sub><b>siddharthgowda</b></sub></a><br /></td>
     <td align="center" class="author"><a href="https://github.com/noahsub"><img src="assets/images/profile/noahsub.png" alt=""/><br /><sub><b>noahsub</b></sub></a><br /></td>
     <td align="center" class="author"><a href="https://github.com/alastairsim"><img src="assets/images/profile/alastairsim.png" alt=""/><br /><sub><b>alastairsim</b></sub></a><br /></td>
     <td align="center" class="author"><a href="https://github.com/kinheychan"><img src="assets/images/profile/kinheychan.png" alt=""/><br /><sub><b>kinheychan</b></sub></a><br /></td>
