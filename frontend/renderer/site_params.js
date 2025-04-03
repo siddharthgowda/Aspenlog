@@ -473,7 +473,7 @@ async function save() {
 
     // Fetch the current save data
     const getSaveDataRequestOptions = {
-      method: "GET",
+      method: "POST",
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
@@ -482,7 +482,7 @@ async function save() {
     };
 
     const getSaveDataResponse = await fetch(
-      `${connectionAddress}/get_user_save_data/${saveFileId}`,
+      `${connectionAddress}/get_user_save_file?id=${saveFileId}`,
       getSaveDataRequestOptions
     );
 
@@ -491,7 +491,9 @@ async function save() {
     }
 
     const currentSaveData = await getSaveDataResponse.json();
-    const currentSaveDataJSON = JSON.parse(currentSaveData.json_data);
+    console.log({ currentSaveData });
+    const currentSaveDataJSON = JSON.parse(currentSaveData.JsonData);
+    console.log({ currentSaveDataJSON });
 
     // Collecting all user inputs
     const projectNameInput = document.getElementById("project-name");
@@ -538,6 +540,8 @@ async function save() {
 
     // Merge new data with existing data
     const updatedSaveData = { ...currentSaveDataJSON, ...newSaveData };
+
+    console.log({ updatedSaveData });
 
     // Save the updated JSON data
     const headers = new Headers();
