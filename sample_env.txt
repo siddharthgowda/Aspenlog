@@ -1,0 +1,10 @@
+// hosting information
+HOST= // i.e. localhost for local purposes and a cloud provider host for production
+PORT=
+// Data Base Info
+ADMIN_USERNAME= // i.e. postgres
+ADMIN_PASSWORD=NONE
+WRITE_USERNAME=NONE
+WRITE_PASSWORD=NONE
+READ_USERNAME=NONE
+READ_PASSWORD=NONE

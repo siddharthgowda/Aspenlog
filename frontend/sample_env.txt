@@ -1,0 +1,2 @@
+BACKEND_LOCAL= // true or false
+DISABLE_HTTP_CACHE= // true or fase
